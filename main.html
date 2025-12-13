@@ -118,7 +118,6 @@
       color: inherit;
     }
 
-    /* Hero emphasis in AN green */
     #an-mini-hoopers .an-hero-lede strong,
     #an-mini-hoopers .an-hero-lede b,
     #an-mini-hoopers .an-hero-meta strong,
@@ -226,15 +225,13 @@
       gap: 0.4rem;
     }
 
-    .an-btn-primary,
-    .an-btn-secondary {
+    .an-btn-primary {
       background: linear-gradient(135deg, #38f28f 0%, #009B5E 50%, #007548 100%);
       color: #ffffff;
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
     }
 
-    .an-btn-primary:hover,
-    .an-btn-secondary:hover {
+    .an-btn-primary:hover {
       transform: translateY(-1px);
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.8);
     }
@@ -251,17 +248,11 @@
       color: #007548;
     }
 
-    .an-btn-icon {
-      font-size: 1.1rem;
-      line-height: 1;
-    }
+    .an-btn-icon { font-size: 1.1rem; line-height: 1; }
 
     #an-mini-hoopers .an-btn-primary,
     #an-mini-hoopers .an-btn-primary:link,
-    #an-mini-hoopers .an-btn-primary:visited,
-    #an-mini-hoopers .an-btn-secondary,
-    #an-mini-hoopers .an-btn-secondary:link,
-    #an-mini-hoopers .an-btn-secondary:visited {
+    #an-mini-hoopers .an-btn-primary:visited {
       color: #ffffff !important;
     }
     #an-mini-hoopers .an-btn span { color: inherit !important; }
@@ -272,19 +263,67 @@
       color: #e5e7eb;
     }
 
-    /* ===== MAIN CARD (white content block) ===== */
+    /* ===== MAIN WRAP ===== */
     #an-mini-hoopers .an-main-wrap {
       background: #f3f4f6;
       padding: 0 0 3rem;
     }
 
+    /* ===== TABS ===== */
+    .an-tabs-wrap {
+      max-width: var(--an-max-width);
+      margin: -28px auto 0;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .an-tabs {
+      background: #ffffff;
+      border: 1px solid var(--an-card-border);
+      border-radius: 12px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+      overflow: hidden;
+    }
+
+    .an-tabs-bar {
+      display: flex;
+      background: #ffffff;
+      border-bottom: 1px solid var(--an-card-border);
+    }
+
+    .an-tab-btn {
+      flex: 1 1 0;
+      appearance: none;
+      background: transparent;
+      border: none;
+      padding: 0.95rem 1rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: #111827;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .an-tab-btn:hover { background: #f3f4f6; }
+
+    .an-tab-btn[aria-selected="true"] {
+      background: #e7fff1;
+      color: #007548;
+      box-shadow: inset 0 -3px 0 #009B5E;
+    }
+
+    .an-tab-panel { display: none; padding: 0; }
+    .an-tab-panel.is-active { display: block; }
+
+    /* ===== MAIN CARD ===== */
     #an-mini-hoopers .an-main {
       width: 100%;
       max-width: var(--an-max-width);
-      margin: -36px auto 0;
+      margin: 16px auto 0;
       padding: 2.5rem 0 3.1rem;
       background: var(--an-card-bg);
-      border-radius: 0; /* square edges */
+      border-radius: 0;
       box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.12);
       border: 1px solid var(--an-card-border);
       position: relative;
@@ -337,11 +376,6 @@
       color: var(--an-text-muted);
     }
 
-    #an-mini-hoopers strong {
-      font-weight: 600;
-      color: #111827;
-    }
-
     #an-mini-hoopers a {
       color: var(--an-accent);
       text-decoration: none;
@@ -362,10 +396,7 @@
       text-align: center;
     }
 
-    .an-note {
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
+    .an-note { font-size: 0.9rem; color: #6b7280; }
 
     .an-smallprint {
       text-align: center;
@@ -382,24 +413,168 @@
       color: #6b7280;
     }
 
+    /* ===== Submitted Photos Carousel ===== */
+    .an-gallery-intro { margin-top: 0.5rem; margin-bottom: 0.6rem; }
+    .an-carousel { margin-top: 1.25rem; }
+
+    .an-carousel-stage {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b1220;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+    }
+
+    .an-carousel-stage::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .an-carousel-main {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .an-carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(2, 6, 23, 0.55);
+      color: #ffffff;
+      cursor: pointer;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .an-carousel-arrow:hover {
+      transform: translateY(-50%) scale(1.04);
+      background: rgba(2, 6, 23, 0.75);
+    }
+
+    .an-carousel-arrow:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .an-carousel-arrow.prev { left: 14px; }
+    .an-carousel-arrow.next { right: 14px; }
+
+    .an-carousel-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: baseline;
+      margin-top: 0.9rem;
+    }
+
+    /* NEW: caption text (below image) */
+    .an-carousel-caption {
+      margin: 0;
+      font-weight: 600;
+      color: #111827;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+
+    .an-carousel-count {
+      margin: 0;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    /* Thumbnail pager */
+    .an-thumb-row {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .an-thumb-pager {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(17,24,39,0.12);
+      background: #ffffff;
+      color: #111827;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      transition: transform 0.12s ease, background-color 0.12s ease;
+      flex: 0 0 auto;
+    }
+
+    .an-thumb-pager:hover { transform: translateY(-1px); background: #f9fafb; }
+    .an-thumb-pager:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+    .an-thumb-window { overflow: hidden; flex: 1 1 auto; }
+
+    .an-thumb-strip {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .an-thumb {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: #111827;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+
+    .an-thumb:hover { transform: translateY(-1px); }
+    .an-thumb.is-active { border-color: #009B5E; }
+
+    .an-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .an-thumb-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 700px) {
       #an-mini-hoopers .an-hero { padding: 3rem 1.2rem 3.3rem; }
       #an-mini-hoopers .an-hero-title { font-size: 2.1rem; }
-      #an-mini-hoopers .an-main {
-        padding: 2.1rem 0 2.8rem;
-        margin-top: -28px;
-      }
-      #an-mini-hoopers .an-main-inner {
-        padding-left: 1.4rem;
-        padding-right: 1.4rem;
-      }
-      #an-mini-hoopers h2 { margin-top: 1.9rem; }
-      .an-hero-meta span {
-        display: block;
-        margin: 0.15rem 0;
-      }
-      .an-cta-row { justify-content: center; }
+      #an-mini-hoopers .an-main { padding: 2.1rem 0 2.8rem; }
+      #an-mini-hoopers .an-main-inner { padding-left: 1.4rem; padding-right: 1.4rem; }
+      .an-tabs-wrap { padding: 0 1.1rem; }
+      .an-carousel-arrow { width: 40px; height: 40px; }
+      .an-thumb-pager { width: 36px; height: 36px; }
+      .an-thumb-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+
+    /* Keeps spacing tight between intro and H2 */
+    #an-mini-hoopers #an-panel-submitted .an-gallery-intro { margin-bottom: 0.6rem; }
+    #an-mini-hoopers #an-panel-submitted #an-submitted-heading { margin-top: 0; }
   </style>
 
   <div class="an-hero">
@@ -409,37 +584,20 @@
         Holiday 2025–26 • U.S. Only
       </div>
 
-      <!-- HERO CAROUSEL -->
       <div class="an-hero-img-wrap">
         <div class="an-hero-img-frame">
           <div class="an-hero-slider" data-an-slider="hero" data-autoplay="true">
             <div class="an-hero-slide is-active">
-              <img
-                src="https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg"
-                alt="Mini Hoopers contest header image"
-                loading="eager"
-              >
+              <img src="https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg" alt="Mini Hoopers contest header image" loading="eager">
             </div>
             <div class="an-hero-slide">
-              <img
-                src="https://i.postimg.cc/bJgD312s/2GDP67F.jpg"
-                alt="Dog standing with both paws on basketball"
-                loading="lazy"
-              >
+              <img src="https://i.postimg.cc/bJgD312s/2GDP67F.jpg" alt="Dog standing with both paws on basketball" loading="lazy">
             </div>
             <div class="an-hero-slide">
-              <img
-                src="https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg"
-                alt="Dog swimming while pushing basketball"
-                loading="lazy"
-              >
+              <img src="https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg" alt="Dog swimming while pushing basketball" loading="lazy">
             </div>
             <div class="an-hero-slide">
-              <img
-                src="https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg"
-                alt="Dog pushing basketball forward with effort"
-                loading="lazy"
-              >
+              <img src="https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg" alt="Dog pushing basketball forward with effort" loading="lazy">
             </div>
           </div>
         </div>
@@ -456,26 +614,17 @@
         and you could win a hefty cash prize and the crown of America’s Cutest Pet Baller.
       </p>
 
-      <p class="an-hero-lede">
-        The contest runs for a limited time, so don’t sit on it — get your shot up while the window’s
-        open. And before you enter, make sure you read the full page and the Terms &amp; Conditions
-        so you know exactly how to play.
-      </p>
-
       <div class="an-hero-meta">
         <span><strong>Contest window:</strong> Dec 15, 2025 – Jan 16, 2026 (11:59 PM ET)</span>
         <span><strong>Grand Prize:</strong> $3,000 USD</span>
       </div>
 
       <div class="an-hero-actions">
-        <a href="YOUR_GOOGLE_FORM_URL_HERE"
-           class="an-btn an-btn-primary" target="_blank" rel="noopener">
+        <a href="YOUR_GOOGLE_FORM_URL_HERE" class="an-btn an-btn-primary" target="_blank" rel="noopener">
           <span class="an-btn-icon">🏀</span>
           <span>Enter the Contest</span>
         </a>
-        <a href="#an-mini-hoopers-terms" class="an-btn an-btn-ghost">
-          Terms &amp; Conditions
-        </a>
+        <a href="#an-mini-hoopers-terms" class="an-btn an-btn-ghost">Terms &amp; Conditions</a>
       </div>
 
       <div class="an-hero-footnote">
@@ -485,212 +634,406 @@
   </div>
 
   <div class="an-main-wrap">
-    <div class="an-main" id="an-mini-hoopers-details">
-      <div class="an-main-inner">
-        <!-- 1. HOW TO ENTER & ELIGIBILITY -->
-        <h2>How to Enter</h2>
-
-        <p>
-          To enter, complete the official
-          <a href="YOUR_GOOGLE_FORM_URL_HERE" target="_blank" rel="noopener">
-            Mini Hoopers: America’s Cutest Pet Ballers Entry Form
-          </a>.
-        </p>
-        <ul>
-          <li>Upload <strong>one (1) photo</strong> featuring your pet and a basketball.</li>
-          <li>Confirm that you own all rights to the photo and that it is <strong>not AI-generated</strong>.</li>
-          <li>Provide your name, email address, and any requested social media handles.</li>
-          <li>Confirm you are a <strong>legal U.S. resident aged 18+</strong> and agree to the
-            <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">Terms &amp; Conditions</a>.
-          </li>
-        </ul>
-
-        <h2>Eligibility</h2>
-        <ul>
-          <li>Open to <strong>legal residents of the United States</strong> only.</li>
-          <li>Participants must be <strong>18 years of age or older</strong> at the time of entry.</li>
-          <li>Limit <strong>one entry per person</strong> (one pet photo).</li>
-          <li>
-            Employees, officers, directors, and agents of the Organizer, and their immediate family members,
-            are not eligible to participate.
-          </li>
-        </ul>
-
-        <p class="an-note">
-          Submissions are reviewed for eligibility and brand safety. If something doesn’t meet the basic requirements,
-          we may not be able to include it — but if it’s your pet + a basketball, send it anyway. We want to see them hoop.
-        </p>
-
-        <!-- 2. PHOTO & CONTENT REQUIREMENTS (softened) -->
-        <h2>Photo Tips &amp; Requirements</h2>
-
-        <p>
-          We’re keeping this fun. If your photo includes <strong>your pet</strong> and a <strong>basketball</strong>, you’re in the right place.
-          For the best “Mini Hoopers” vibe, aim for a shot where it feels like your pet is part of the play.
-        </p>
-
-        <h3>Quick tips to make your entry pop</h3>
-        <ul>
-          <li>Make your pet the clear star of the photo (centered / in focus).</li>
-          <li>If you can, capture a moment where your pet looks like they’re <strong>playing with</strong> the ball (paws on it, nudging it, chasing it, etc.).</li>
-          <li>Try to keep the ball visible in the frame so we can see the full scene.</li>
-        </ul>
-
-        <h3>The important stuff (so we can accept your entry)</h3>
-        <ul>
-          <li><strong>One photo per person.</strong></li>
-          <li><strong>No AI-generated images.</strong></li>
-          <li>You must own the rights to the photo and have permission from anyone who appears.</li>
-          <li>
-            People can appear, but the photo should still clearly feature <strong>your pet + the basketball</strong>.
-          </li>
-          <li>
-            The Organizer may reject or remove submissions that prominently feature <strong>third-party trademarks,
-            logos, or branded materials</strong> that could imply sponsorship, endorsement, or affiliation — including professional sports leagues or teams.
-          </li>
-          <li>
-            Entries that are offensive, inappropriate, or otherwise violate the
-            <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">
-              Terms &amp; Conditions
-            </a>
-            may be disqualified.
-          </li>
-        </ul>
-
-        <!-- 3. KEY DATES -->
-        <h2>Key Dates</h2>
-        <ul>
-          <li><strong>Contest opens:</strong> December 15, 2025.</li>
-          <li><strong>Contest closes:</strong> January 16, 2026 at 11:59 PM ET.</li>
-          <li><strong>Winner announcement:</strong> On or before January 23, 2026 (Eastern Time).</li>
-        </ul>
-
-        <!-- 4. WHAT YOU CAN WIN -->
-        <h2>What You Can Win</h2>
-        <ul>
-          <li><strong>Grand Prize:</strong> $3,000 USD, delivered via PayPal or another payment method selected by the Organizer.</li>
-          <li>Bragging rights as the official <strong>Mini Hoopers: America’s Cutest Pet Ballers</strong> winner.</li>
-          <li>Potential feature across The Action Network / Better Collective USA channels (publication not guaranteed).</li>
-        </ul>
-
-        <!-- 5. WHEN & HOW YOU’LL BE NOTIFIED -->
-        <h2>When &amp; How You’ll Be Notified (and What Happens Next)</h2>
-        <p>
-          A potential winner will be selected after the Contest closes and will be contacted by the Organizer via the email
-          address provided on the entry form <strong>on or before January 23, 2026</strong>.
-        </p>
-        <p>
-          If the potential winner does not respond within the timeframe specified in the notification email, or is found to be
-          ineligible under these rules, an alternate potential winner may be selected at the Organizer’s discretion.
-        </p>
-        <p class="an-note">
-          If selected as a winner, you may be asked to participate in a short video call or share a brief video of your pet.
-        </p>
-
-        <!-- Anchor target for Terms button -->
-        <div id="an-mini-hoopers-terms"></div>
-
-        <!-- 6. RIGHTS & USAGE -->
-        <h2>Rights &amp; Usage</h2>
-        <p>
-          By submitting a photo, you grant the Organizer a <strong>non-exclusive, royalty-free, worldwide license</strong>
-          to use, reproduce, display, and distribute the photo in connection with the Contest and related promotional
-          purposes.
-        </p>
-        <p>
-          You represent and warrant that you own all rights to the submitted photo and that your submission does not
-          intentionally feature or highlight professional sports league or team trademarks, and that any such marks
-          appearing incidentally are lawful uses within a personal photograph.
-        </p>
-
-        <!-- 7. PERSONAL DATA & PRIVACY -->
-        <h2>Personal Data &amp; Privacy</h2>
-        <p>
-          Personal information collected in connection with the Contest will be used solely for administering the Contest and in
-          accordance with the Organizer’s
-          <a href="LINK_TO_PRIVACY_POLICY" target="_blank" rel="noopener">Privacy Policy</a>.
-        </p>
-        <p class="an-note">
-          This may include your email address, first name, social media handles, and any materials submitted as part of the Contest
-          (including your pet’s name, photo, and captions). If you are selected as the potential winner, you may be asked to provide
-          your PayPal details and a copy of a government-issued ID to verify eligibility and award the prize.
-        </p>
-
-        <div class="an-cta-row">
-          <a href="YOUR_GOOGLE_FORM_URL_HERE"
-             class="an-btn an-btn-primary" target="_blank" rel="noopener">
-            Enter the Contest
-          </a>
-          <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS"
-             class="an-btn an-btn-ghost" target="_blank" rel="noopener">
-            View Full Terms &amp; Conditions
-          </a>
+    <div class="an-tabs-wrap">
+      <div class="an-tabs" role="tablist" aria-label="Mini Hoopers tabs">
+        <div class="an-tabs-bar">
+          <button class="an-tab-btn" type="button" role="tab" id="an-tab-guidelines" aria-selected="true" aria-controls="an-panel-guidelines">
+            Contest Guidelines
+          </button>
+          <button class="an-tab-btn" type="button" role="tab" id="an-tab-submitted" aria-selected="false" aria-controls="an-panel-submitted">
+            Submitted Photos
+          </button>
         </div>
 
-        <p class="an-smallprint">
-          This Contest is not sponsored, endorsed, or affiliated with the NBA, its teams, or players.
-          Any third-party trademarks, team names, logos, or branded apparel that may appear incidentally in
-          user-submitted photos belong to their respective owners and do not imply sponsorship, endorsement, or affiliation.
-        </p>
+        <!-- Panel: Guidelines (your original content remains) -->
+        <div class="an-tab-panel is-active" role="tabpanel" id="an-panel-guidelines" aria-labelledby="an-tab-guidelines">
+          <div class="an-main" id="an-mini-hoopers-details">
+            <div class="an-main-inner">
+              <!-- KEEPING YOUR GUIDELINES CONTENT AS-IS (unchanged) -->
+              <h2>How to Enter</h2>
+              <p>
+                To enter, complete the official
+                <a href="YOUR_GOOGLE_FORM_URL_HERE" target="_blank" rel="noopener">
+                  Mini Hoopers: America’s Cutest Pet Ballers Entry Form
+                </a>.
+              </p>
+              <ul>
+                <li>Upload <strong>one (1) photo</strong> featuring your pet and a basketball.</li>
+                <li>Confirm that you own all rights to the photo and that it is <strong>not AI-generated</strong>.</li>
+                <li>Provide your name, email address, and any requested social media handles.</li>
+                <li>Confirm you are a <strong>legal U.S. resident aged 18+</strong> and agree to the
+                  <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">Terms &amp; Conditions</a>.
+                </li>
+              </ul>
+
+              <h2>Eligibility</h2>
+              <ul>
+                <li>Open to <strong>legal residents of the United States</strong> only.</li>
+                <li>Participants must be <strong>18 years of age or older</strong> at the time of entry.</li>
+                <li>Limit <strong>one entry per person</strong> (one pet photo).</li>
+                <li>
+                  Employees, officers, directors, and agents of the Organizer, and their immediate family members,
+                  are not eligible to participate.
+                </li>
+              </ul>
+
+              <p class="an-note">
+                Submissions are reviewed for eligibility and brand safety. If something doesn’t meet the basic requirements,
+                we may not be able to include it — but if it’s your pet + a basketball, send it anyway. We want to see them hoop.
+              </p>
+
+              <p class="an-note">
+                Questions about the contest? Email us at
+                <a href="mailto:earnedmedia@bettercollective.com">earnedmedia@bettercollective.com</a>.
+              </p>
+
+              <h2>Photo Tips &amp; Requirements</h2>
+              <p>
+                We’re keeping this fun. If your photo includes <strong>your pet</strong> and a <strong>basketball</strong>, you’re in the right place.
+                For the best “Mini Hoopers” vibe, aim for a shot where it feels like your pet is part of the play.
+              </p>
+
+              <h3>Quick tips to make your entry pop</h3>
+              <ul>
+                <li>Make your pet the clear star of the photo (centered / in focus).</li>
+                <li>If you can, capture a moment where your pet looks like they’re <strong>playing with</strong> the ball (paws on it, nudging it, chasing it, etc.).</li>
+                <li>Try to keep the ball visible in the frame so we can see the full scene.</li>
+              </ul>
+
+              <h3>The important stuff (so we can accept your entry)</h3>
+              <ul>
+                <li><strong>One photo per person.</strong></li>
+                <li><strong>No AI-generated images.</strong></li>
+                <li>You must own the rights to the photo and have permission from anyone who appears.</li>
+                <li>People can appear, but the photo should still clearly feature <strong>your pet + the basketball</strong>.</li>
+                <li>
+                  The Organizer may reject or remove submissions that prominently feature <strong>third-party trademarks,
+                  logos, or branded materials</strong> that could imply sponsorship, endorsement, or affiliation — including professional sports leagues or teams.
+                </li>
+                <li>
+                  Entries that are offensive, inappropriate, or otherwise violate the
+                  <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">
+                    Terms &amp; Conditions
+                  </a>
+                  may be disqualified.
+                </li>
+              </ul>
+
+              <h2>Key Dates</h2>
+              <ul>
+                <li><strong>Contest opens:</strong> December 15, 2025.</li>
+                <li><strong>Contest closes:</strong> January 16, 2026 at 11:59 PM ET.</li>
+                <li><strong>Winner announcement:</strong> On or before January 23, 2026 (Eastern Time).</li>
+              </ul>
+
+              <h2>What You Can Win</h2>
+              <ul>
+                <li><strong>Grand Prize:</strong> $3,000 USD, delivered via PayPal or another payment method selected by the Organizer.</li>
+                <li>Bragging rights as the official <strong>Mini Hoopers: America’s Cutest Pet Ballers</strong> winner.</li>
+                <li>Potential feature across The Action Network / Better Collective USA channels (publication not guaranteed).</li>
+              </ul>
+
+              <h2>When &amp; How You’ll Be Notified</h2>
+              <p>
+                A potential winner will be selected after the Contest closes and will be contacted by the Organizer via the email
+                address provided on the entry form <strong>on or before January 23, 2026</strong>.
+              </p>
+              <p>
+                If the potential winner does not respond within the timeframe specified in the notification email, or is found to be
+                ineligible under these rules, an alternate potential winner may be selected at the Organizer’s discretion.
+              </p>
+
+              <h2>Rights &amp; Usage</h2>
+              <p>
+                By submitting a photo, you grant the Organizer a <strong>non-exclusive, royalty-free, worldwide license</strong>
+                to use, reproduce, display, and distribute the photo in connection with the Contest and related promotional
+                purposes.
+              </p>
+              <p>
+                You represent and warrant that you own all rights to the submitted photo and that your submission does not intentionally
+                feature or highlight professional sports league or team trademarks, and that any such marks appearing incidentally are lawful uses
+                within a personal photograph.
+              </p>
+
+              <h2>Personal Data &amp; Privacy</h2>
+              <p>
+                Personal information collected in connection with the Contest will be used solely for administering the Contest and in
+                accordance with the Organizer’s
+                <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+              </p>
+              <p class="an-note">
+                This may include your email address, first name, social media handles, and any materials submitted as part of the Contest
+                (including your pet’s name, photo, and captions). If you are selected as the potential winner, you may be asked to provide
+                your PayPal details and a copy of a government-issued ID to verify eligibility and award the prize.
+              </p>
+
+              <div class="an-cta-row">
+                <a href="YOUR_GOOGLE_FORM_URL_HERE" class="an-btn an-btn-primary" target="_blank" rel="noopener">
+                  Enter the Contest
+                </a>
+                <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" class="an-btn an-btn-ghost" target="_blank" rel="noopener">
+                  View Full Terms &amp; Conditions
+                </a>
+              </div>
+
+              <p class="an-smallprint">
+                This Contest is not sponsored, endorsed, or affiliated with the NBA, its teams, or players.
+                Any third-party trademarks, team names, logos, or branded apparel that may appear incidentally in
+                user-submitted photos belong to their respective owners and do not imply sponsorship, endorsement, or affiliation.
+              </p>
+
+              <div id="an-mini-hoopers-terms"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Submitted Photos -->
+        <div class="an-tab-panel" role="tabpanel" id="an-panel-submitted" aria-labelledby="an-tab-submitted">
+          <div class="an-main">
+            <div class="an-main-inner">
+              <p class="an-gallery-intro">
+                This gallery shows <strong>approved</strong> Mini Hoopers entries. Check back as new submissions get reviewed!
+              </p>
+
+              <!-- H2 stays ABOVE the image -->
+              <h2 id="an-submitted-heading">Approved Mini Hooper #1</h2>
+
+              <div class="an-carousel" id="an-carousel">
+                <div class="an-carousel-stage">
+                  <button class="an-carousel-arrow prev" type="button" aria-label="Previous photo">‹</button>
+                  <img class="an-carousel-main" id="an-carousel-main" src="" alt="Approved Mini Hoopers entry">
+                  <button class="an-carousel-arrow next" type="button" aria-label="Next photo">›</button>
+                </div>
+
+                <div class="an-carousel-meta">
+                  <!-- Caption from user goes HERE (below image) -->
+                  <p class="an-carousel-caption" id="an-carousel-caption"></p>
+                  <p class="an-carousel-count" id="an-carousel-count">1 / 1</p>
+                </div>
+
+                <div class="an-thumb-row" aria-label="Thumbnail navigation">
+                  <button class="an-thumb-pager" id="an-thumb-prev" type="button" aria-label="Previous thumbnails">‹</button>
+                  <div class="an-thumb-window">
+                    <div class="an-thumb-strip" id="an-thumb-strip"></div>
+                  </div>
+                  <button class="an-thumb-pager" id="an-thumb-next" type="button" aria-label="Next thumbnails">›</button>
+                </div>
+              </div>
+
+              <div class="an-cta-row" style="margin-top:1.6rem;">
+                <a href="YOUR_GOOGLE_FORM_URL_HERE" class="an-btn an-btn-primary" target="_blank" rel="noopener">
+                  Enter the Contest
+                </a>
+                <button type="button" class="an-btn an-btn-ghost" data-switch-tab="guidelines">
+                  Read Guidelines
+                </button>
+              </div>
+
+              <p class="an-note">
+                Only approved entries appear here. If your photo isn’t visible yet, it may still be in review.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </div>
+
+    <div class="an-footer">
+      &copy; 2025 The Action Network / Better Collective USA, Inc. All rights reserved.
     </div>
   </div>
 
-  <div class="an-footer">
-    &copy; 2025 The Action Network / Better Collective USA, Inc. All rights reserved.
-  </div>
-
-  <!-- Simple auto-rotating HERO slider with clickable dots -->
   <script>
     (function () {
-      const slider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
-      if (!slider) return;
+      /* ===== HERO SLIDER ===== */
+      const heroSlider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
+      if (heroSlider) {
+        const slides = Array.from(heroSlider.querySelectorAll('.an-hero-slide'));
+        const dotsWrap = document.querySelector('#an-mini-hoopers .an-hero-dots');
+        const AUTO_INTERVAL = 4500;
+        let index = 0;
+        let timer = null;
 
-      const slides = Array.from(slider.querySelectorAll('.an-hero-slide'));
-      if (slides.length < 2) return;
+        if (slides.length > 1 && dotsWrap) {
+          const dots = slides.map((_, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'an-hero-dot' + (i === 0 ? ' is-active' : '');
+            btn.setAttribute('aria-label', 'Show header image ' + (i + 1));
+            btn.addEventListener('click', () => {
+              goTo(i);
+              restart();
+            });
+            dotsWrap.appendChild(btn);
+            return btn;
+          });
 
-      const dotsWrap = document.querySelector('#an-mini-hoopers .an-hero-dots');
-      const AUTO_INTERVAL = 4500;
-      let index = 0;
-      let timer = null;
+          function goTo(i) {
+            slides[index].classList.remove('is-active');
+            dots[index] && dots[index].classList.remove('is-active');
+            index = i;
+            slides[index].classList.add('is-active');
+            dots[index] && dots[index].classList.add('is-active');
+          }
 
-      const dots = slides.map((_, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'an-hero-dot' + (i === 0 ? ' is-active' : '');
-        btn.setAttribute('aria-label', 'Show header image ' + (i + 1));
-        btn.addEventListener('click', () => {
-          goTo(i);
-          restart();
+          function start() {
+            const autoplay = heroSlider.dataset.autoplay === 'true';
+            if (!autoplay) return null;
+            return setInterval(() => goTo((index + 1) % slides.length), AUTO_INTERVAL);
+          }
+
+          function restart() {
+            if (timer) clearInterval(timer);
+            timer = start();
+          }
+
+          timer = start();
+        }
+      }
+
+      /* ===== TABS ===== */
+      const tabGuidelines = document.getElementById('an-tab-guidelines');
+      const tabSubmitted = document.getElementById('an-tab-submitted');
+      const panelGuidelines = document.getElementById('an-panel-guidelines');
+      const panelSubmitted = document.getElementById('an-panel-submitted');
+
+      function setTab(which) {
+        const isGuidelines = which === 'guidelines';
+        tabGuidelines.setAttribute('aria-selected', isGuidelines ? 'true' : 'false');
+        tabSubmitted.setAttribute('aria-selected', isGuidelines ? 'false' : 'true');
+        panelGuidelines.classList.toggle('is-active', isGuidelines);
+        panelSubmitted.classList.toggle('is-active', !isGuidelines);
+      }
+
+      if (tabGuidelines && tabSubmitted && panelGuidelines && panelSubmitted) {
+        tabGuidelines.addEventListener('click', () => setTab('guidelines'));
+        tabSubmitted.addEventListener('click', () => setTab('submitted'));
+
+        document.querySelectorAll('#an-mini-hoopers [data-switch-tab]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const target = btn.getAttribute('data-switch-tab');
+            setTab(target === 'guidelines' ? 'guidelines' : 'submitted');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
         });
-        dotsWrap && dotsWrap.appendChild(btn);
-        return btn;
+      }
+
+      /* ===== Approved Photos: placeholders for testing ===== */
+      const base = [
+        { src: "https://i.postimg.cc/bJgD312s/2GDP67F.jpg" },
+        { src: "https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg" },
+        { src: "https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg" },
+        { src: "https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg" }
+      ];
+
+      // Replace caption strings with real user captions later (from your sheet/API)
+      const approvedPhotos = Array.from({ length: 26 }, (_, i) => {
+        const item = base[i % base.length];
+        return {
+          src: item.src,
+          title: `Approved Mini Hooper #${i + 1}`,              // used for the H2 above image
+          caption: `User caption for entry #${i + 1} goes here` // shown below image
+        };
       });
 
-      function goTo(i) {
-        slides[index].classList.remove('is-active');
-        dots[index] && dots[index].classList.remove('is-active');
+      const carouselWrap = document.getElementById('an-carousel');
+      const mainImg = document.getElementById('an-carousel-main');
+      const captionEl = document.getElementById('an-carousel-caption');
+      const countEl = document.getElementById('an-carousel-count');
+      const headingEl = document.getElementById('an-submitted-heading');
 
-        index = i;
+      const prevMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.prev') : null;
+      const nextMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.next') : null;
 
-        slides[index].classList.add('is-active');
-        dots[index] && dots[index].classList.add('is-active');
+      const thumbStrip = document.getElementById('an-thumb-strip');
+      const thumbPrev = document.getElementById('an-thumb-prev');
+      const thumbNext = document.getElementById('an-thumb-next');
+
+      const THUMBS_PER_PAGE = 8;
+
+      function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+      function initCarousel(items) {
+        if (!items || !items.length) return;
+
+        let active = 0;
+        let page = 0;
+        const totalPages = Math.ceil(items.length / THUMBS_PER_PAGE);
+
+        function renderThumbPage() {
+          const start = page * THUMBS_PER_PAGE;
+          const end = Math.min(start + THUMBS_PER_PAGE, items.length);
+
+          thumbStrip.innerHTML = "";
+
+          for (let i = start; i < end; i++) {
+            const btn = document.createElement('button');
+            btn.type = "button";
+            btn.className = "an-thumb" + (i === active ? " is-active" : "");
+            btn.setAttribute("aria-label", "View photo " + (i + 1));
+            btn.innerHTML = `<img src="${items[i].src}" alt="Thumbnail ${i + 1}" loading="lazy">`;
+            btn.addEventListener('click', () => setActive(i));
+            thumbStrip.appendChild(btn);
+          }
+
+          if (thumbPrev) thumbPrev.disabled = (page === 0);
+          if (thumbNext) thumbNext.disabled = (page >= totalPages - 1);
+        }
+
+        function syncActiveThumb() {
+          const desiredPage = Math.floor(active / THUMBS_PER_PAGE);
+          if (desiredPage !== page) {
+            page = desiredPage;
+            renderThumbPage();
+          } else {
+            const pageStart = page * THUMBS_PER_PAGE;
+            Array.from(thumbStrip.children).forEach((el, idx) => {
+              el.classList.toggle('is-active', (pageStart + idx) === active);
+            });
+          }
+        }
+
+        function setActive(i) {
+          active = clamp(i, 0, items.length - 1);
+
+          const title = (items[active].title || ("Approved Mini Hooper #" + (active + 1))).trim();
+          const caption = (items[active].caption || "").trim();
+
+          if (headingEl) headingEl.textContent = title;        // H2 above image
+          if (captionEl) captionEl.textContent = caption;      // caption below image
+
+          if (mainImg) {
+            mainImg.src = items[active].src;
+            mainImg.alt = caption ? ("Mini Hooper entry: " + caption) : title;
+          }
+
+          if (countEl) countEl.textContent = (active + 1) + " / " + items.length;
+
+          syncActiveThumb();
+
+          if (prevMain) prevMain.disabled = (items.length <= 1);
+          if (nextMain) nextMain.disabled = (items.length <= 1);
+        }
+
+        if (prevMain) prevMain.addEventListener('click', () => setActive((active - 1 + items.length) % items.length));
+        if (nextMain) nextMain.addEventListener('click', () => setActive((active + 1) % items.length));
+
+        if (thumbPrev) thumbPrev.addEventListener('click', () => {
+          page = clamp(page - 1, 0, totalPages - 1);
+          renderThumbPage();
+        });
+
+        if (thumbNext) thumbNext.addEventListener('click', () => {
+          page = clamp(page + 1, 0, totalPages - 1);
+          renderThumbPage();
+        });
+
+        renderThumbPage();
+        setActive(0);
       }
 
-      function start() {
-        const autoplay = slider.dataset.autoplay === 'true';
-        if (!autoplay) return null;
-        return setInterval(() => {
-          goTo((index + 1) % slides.length);
-        }, AUTO_INTERVAL);
-      }
-
-      function restart() {
-        if (timer) clearInterval(timer);
-        timer = start();
-      }
-
-      timer = start();
+      initCarousel(approvedPhotos);
     })();
   </script>
 </section>
