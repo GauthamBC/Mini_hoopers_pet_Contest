@@ -5,16 +5,12 @@
       scrollbar-width: thin;
       scrollbar-color: #009B5E #e7fff1;
     }
-    html::-webkit-scrollbar {
-      width: 8px;
-    }
+    html::-webkit-scrollbar { width: 8px; }
     html::-webkit-scrollbar-thumb {
       background: linear-gradient(180deg, #00c46a, #009B5E);
       border-radius: 10px;
     }
-    html::-webkit-scrollbar-track {
-      background: #e7fff1;
-    }
+    html::-webkit-scrollbar-track { background: #e7fff1; }
 
     /* ===== Mini Hoopers Section ===== */
     #an-mini-hoopers {
@@ -25,8 +21,8 @@
       --an-text-main: #111827;
       --an-text-muted: #4b5563;
       --an-accent: #2563eb;
-      --an-max-width: 1040px; /* card width */
-      --an-main-width: 880px; /* inner text column width */
+      --an-max-width: 1040px;
+      --an-main-width: 880px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Helvetica Neue", Arial, sans-serif;
       margin: 0;
@@ -35,9 +31,7 @@
       color: #f9fafb;
     }
 
-    #an-mini-hoopers * {
-      box-sizing: border-box;
-    }
+    #an-mini-hoopers * { box-sizing: border-box; }
 
     /* ===== HERO ===== */
     #an-mini-hoopers .an-hero {
@@ -132,10 +126,10 @@
       color: #00c46a !important;
     }
 
-    /* ===== HERO IMAGE (16:9 rectangle) ===== */
+    /* ===== HERO IMAGE CAROUSEL (16:9) ===== */
     .an-hero-img-wrap {
       max-width: 760px;
-      margin: 0 auto 1.6rem;
+      margin: 0 auto 1.2rem;
     }
 
     .an-hero-img-frame {
@@ -155,13 +149,57 @@
       border-radius: 14px;
       border: 1px solid rgba(15, 23, 42, 0.7);
       pointer-events: none;
+      z-index: 2;
     }
 
-    .an-hero-img {
+    .an-hero-slider {
+      position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .an-hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.01);
+      transition: opacity 0.6s ease, transform 0.9s ease;
+    }
+
+    .an-hero-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .an-hero-slide img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    .an-hero-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 0.7rem;
+    }
+
+    .an-hero-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: none;
+      padding: 0;
+      background: rgba(229, 231, 235, 0.55);
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .an-hero-dot.is-active {
+      background: #00c46a;
+      transform: scale(1.3);
     }
 
     /* ===== BUTTONS ===== */
@@ -226,9 +264,7 @@
     #an-mini-hoopers .an-btn-secondary:visited {
       color: #ffffff !important;
     }
-    #an-mini-hoopers .an-btn span {
-      color: inherit !important;
-    }
+    #an-mini-hoopers .an-btn span { color: inherit !important; }
 
     .an-hero-footnote {
       margin-top: 1rem;
@@ -262,14 +298,10 @@
     }
 
     #an-mini-hoopers .an-main h2,
-    #an-mini-hoopers .an-main h3 {
-      text-align: left !important;
-    }
+    #an-mini-hoopers .an-main h3 { text-align: left !important; }
 
     #an-mini-hoopers .an-main p,
-    #an-mini-hoopers .an-main li {
-      text-align: left;
-    }
+    #an-mini-hoopers .an-main li { text-align: left; }
 
     #an-mini-hoopers h2 {
       color: #111827;
@@ -350,157 +382,23 @@
       color: #6b7280;
     }
 
-    /* ===== Example gallery (good vs. not-quite) ===== */
-    .an-example-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin: 1.7rem auto 0.5rem;
-      justify-content: center;
-    }
-
-    .an-example-card {
-      flex: 1 1 260px;
-      max-width: 360px;
-      background: #f9fafb;
-      border-radius: 14px;
-      padding: 0.9rem 0.9rem 1rem;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-      border: 1px solid #e5e7eb;
-      text-align: left;
-    }
-
-    .an-example-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    
-    .an-example-label-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 700;
-      background: #fee2e2;  /* soft red for “bad” by default */
-      color: #b91c1c;
-    }
-    
-    /* keep your existing color accents */
-    .an-example-bad .an-example-label {
-      color: #b91c1c;
-    }
-    
-    .an-example-good .an-example-label {
-      color: #009B5E;
-    }
-    
-    /* green pill icon for good examples */
-    .an-example-good .an-example-label-icon {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .an-example-img-wrap {
-      margin-bottom: 0.5rem;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #111827;
-    }
-
-    .an-example-slider {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-    }
-
-    .an-example-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    .an-example-slide.is-active {
-      opacity: 1;
-    }
-
-    .an-example-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Slider dots */
-    .an-slider-dots {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 0.4rem;
-    }
-
-    .an-slider-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      border: none;
-      padding: 0;
-      background: #d1d5db;
-      cursor: pointer;
-      transition: transform 0.15s ease, background-color 0.15s ease;
-    }
-
-    .an-slider-dot.is-active {
-      background: #009B5E;
-      transform: scale(1.3);
-    }
-
-    .an-example-caption {
-      font-size: 0.9rem;
-      margin-bottom: 0;
-    }
-
     @media (max-width: 700px) {
-      #an-mini-hoopers .an-hero {
-        padding: 3rem 1.2rem 3.3rem;
-      }
-
-      #an-mini-hoopers .an-hero-title {
-        font-size: 2.1rem;
-      }
-
+      #an-mini-hoopers .an-hero { padding: 3rem 1.2rem 3.3rem; }
+      #an-mini-hoopers .an-hero-title { font-size: 2.1rem; }
       #an-mini-hoopers .an-main {
         padding: 2.1rem 0 2.8rem;
         margin-top: -28px;
       }
-
       #an-mini-hoopers .an-main-inner {
         padding-left: 1.4rem;
         padding-right: 1.4rem;
       }
-
-      #an-mini-hoopers h2 {
-        margin-top: 1.9rem;
-      }
-
+      #an-mini-hoopers h2 { margin-top: 1.9rem; }
       .an-hero-meta span {
         display: block;
         margin: 0.15rem 0;
       }
-
-      .an-cta-row {
-        justify-content: center;
-      }
+      .an-cta-row { justify-content: center; }
     }
   </style>
 
@@ -511,14 +409,41 @@
         Holiday 2025–26 • U.S. Only
       </div>
 
+      <!-- HERO CAROUSEL (replaces single header image) -->
       <div class="an-hero-img-wrap">
         <div class="an-hero-img-frame">
-          <img
-            src="https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg"
-            alt="Dog dressed up as a basketball baller with a hoop"
-            class="an-hero-img"
-          >
+          <div class="an-hero-slider" data-an-slider="hero" data-autoplay="true">
+            <div class="an-hero-slide is-active">
+              <img
+                src="https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg"
+                alt="Mini Hoopers contest header image"
+                loading="eager"
+              >
+            </div>
+            <div class="an-hero-slide">
+              <img
+                src="https://i.postimg.cc/bJgD312s/2GDP67F.jpg"
+                alt="Dog standing with both paws on basketball"
+                loading="lazy"
+              >
+            </div>
+            <div class="an-hero-slide">
+              <img
+                src="https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg"
+                alt="Dog swimming while pushing basketball"
+                loading="lazy"
+              >
+            </div>
+            <div class="an-hero-slide">
+              <img
+                src="https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg"
+                alt="Dog pushing basketball forward with effort"
+                loading="lazy"
+              >
+            </div>
+          </div>
         </div>
+        <div class="an-hero-dots" aria-label="Header image selector"></div>
       </div>
 
       <div class="an-hero-kicker">THE ACTION NETWORK / BETTER COLLECTIVE USA</div>
@@ -526,9 +451,9 @@
       <p class="an-hero-subtitle">One nation. Infinite pets. Only one baller-in-chief.</p>
 
       <p class="an-hero-lede">
-        Got a furry hoops addict at home? Capture them actually in the play — paw on the ball,
-        mid-dribble, going up for a tiny “dunk,” or otherwise clearly working the rock — and you
-        could win a hefty cash prize and the crown of America’s Cutest Pet Baller.
+        Got a furry hoops addict at home? Snap a photo with a basketball — whether it’s a paws-on-the-ball
+        moment, a playful “dribble,” a tiny “dunk,” or anything that feels like your pet is in the game —
+        and you could win a hefty cash prize and the crown of America’s Cutest Pet Baller.
       </p>
 
       <p class="an-hero-lede">
@@ -572,7 +497,7 @@
           </a>.
         </p>
         <ul>
-          <li>Upload <strong>one (1) photo</strong> of your pet clearly interacting with a basketball (for example, holding it, dribbling it, jumping with it, or using it as a prop).</li>
+          <li>Upload <strong>one (1) photo</strong> featuring your pet and a basketball.</li>
           <li>Confirm that you own all rights to the photo and that it is <strong>not AI-generated</strong>.</li>
           <li>Provide your name, email address, and any requested social media handles.</li>
           <li>Confirm you are a <strong>legal U.S. resident aged 18+</strong> and agree to the
@@ -592,145 +517,53 @@
         </ul>
 
         <p class="an-note">
-          All submissions are <strong>manually reviewed</strong> for eligibility and brand safety. Only approved entries
-          will be considered for the Grand Prize.
-        </p>
-        <p class="an-note">
-          Think your pet fits the bill? Hit the <strong>“Enter the Contest”</strong> button above to send in your shot.
+          Submissions are reviewed for eligibility and brand safety. If something doesn’t meet the basic requirements,
+          we may not be able to include it — but if it’s your pet + a basketball, send it anyway. We want to see them hoop.
         </p>
 
-        <!-- 2. PHOTO & CONTENT REQUIREMENTS -->
-        <h2>Photo &amp; Content Requirements</h2>
+        <!-- 2. PHOTO & CONTENT REQUIREMENTS (softened) -->
+        <h2>Photo Tips &amp; Requirements</h2>
 
         <p>
-          We want <strong>pets that are actually hooping</strong> — jumping midair like they’re going up for a tiny dunk, rolling the ball around, snout on it, or even just a solid paw-on-the-ball moment. Anything that shows your pet is really in the play.
-        </p>
-        <p>
-          If the ball’s just sitting in the background or barely in the frame, that’s not a Mini Hoopers moment. We’re looking for photos that feel fun, clear, and actually part of the action.
+          We’re keeping this fun. If your photo includes <strong>your pet</strong> and a <strong>basketball</strong>, you’re in the right place.
+          For the best “Mini Hoopers” vibe, aim for a shot where it feels like your pet is part of the play.
         </p>
 
-        <div class="an-example-grid">
-  <!-- BAD EXAMPLES -->
-  <div class="an-example-card an-example-bad">
-    <div class="an-example-label">
-      <span class="an-example-label-icon">✕</span>
-      <span>Not what we’re looking for</span>
-    </div>
-    <div class="an-example-img-wrap">
-      <div class="an-example-slider" data-autoplay="true">
-        <div class="an-example-slide"
-             data-caption="Ball is cropped and too close, and it’s unclear if your pet is controlling it or if it’s being pushed from outside the frame.">
-          <img
-            src="https://i.postimg.cc/x8X7tyFq/Dog-example-Cropped-Ball.png"
-            alt="Dog with basketball cropped very close to camera"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="The basketball is behind your pet and not part of the action, so we can’t see any real interaction or control.">
-          <img
-            src="https://i.postimg.cc/NFThQk7Y/Ball-place-back-of-the-dog.png"
-            alt="Dog sitting with basketball placed behind them"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="A person is controlling the ball, not the pet. Your pet must clearly be the one handling or interacting with the basketball.">
-          <img
-            src="https://i.postimg.cc/cJ5PYbXD/Ball-not-completely-Controlled-by-dog.png"
-            alt="Person holding basketball while dog looks on"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="Your pet isn’t actively interacting with the basketball (e.g., touching it or playing with it) — they’re just positioned near it.">
-          <img
-            src="https://i.postimg.cc/0N9BLqH3/Dog-Sitting-background-pet.jpg"
-            alt="Dog sitting with basketball in the background"
-          >
-        </div>
-      </div>
-      <div class="an-slider-dots"></div>
-    </div>
-    <p class="an-example-caption"
-       data-default="Ball is cropped and too close, and it’s unclear if your pet is controlling it or if it’s being pushed from outside the frame.">
-      Ball is cropped and too close, and it’s unclear if your pet is controlling it or if it’s being pushed from outside the frame.
-    </p>
-  </div>
+        <h3>Quick tips to make your entry pop</h3>
+        <ul>
+          <li>Make your pet the clear star of the photo (centered / in focus).</li>
+          <li>If you can, capture a moment where your pet looks like they’re <strong>playing with</strong> the ball (paws on it, nudging it, chasing it, etc.).</li>
+          <li>Try to keep the ball visible in the frame so we can see the full scene.</li>
+        </ul>
 
-  <!-- GOOD EXAMPLES -->
-  <div class="an-example-card an-example-good">
-    <div class="an-example-label">
-      <span class="an-example-label-icon">✓</span>
-      <span>This is a Mini Hooper</span>
-    </div>
-    <div class="an-example-img-wrap">
-      <div class="an-example-slider" data-autoplay="true">
-        <div class="an-example-slide"
-             data-caption="Your pet is clearly controlling the basketball with both paws — an obvious, active Mini Hoopers moment.">
-          <img
-            src="https://i.postimg.cc/bJgD312s/2GDP67F.jpg"
-            alt="Dog standing with both paws on basketball"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="Your pet is actively pushing the basketball through the water, clearly interacting and directing the play.">
-          <img
-            src="https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg"
-            alt="Dog swimming while pushing basketball"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="Your pet is mid-jump and fully focused on the ball, and although a child is present, they aren’t touching or controlling the basketball.">
-          <img
-            src="https://i.postimg.cc/fLzktkqj/TRPN4E.jpg"
-            alt="Dog jumping toward basketball with child nearby"
-          >
-        </div>
-        <div class="an-example-slide"
-             data-caption="Your pet is driving the basketball forward with real effort — clear, active interaction perfect for Mini Hoopers.">
-          <img
-            src="https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg"
-            alt="Dog pushing basketball forward with effort"
-          >
-        </div>
-      </div>
-      <div class="an-slider-dots"></div>
-    </div>
-    <p class="an-example-caption"
-       data-default="Your pet is clearly controlling the basketball with both paws — an obvious, active Mini Hoopers moment.">
-      Your pet is clearly controlling the basketball with both paws — an obvious, active Mini Hoopers moment.
-    </p>
-  </div>
-</div>
-
-       <ul>
-      <li>The photo must feature <strong>your pet</strong> as the primary subject.</li>
-      <li>Your pet must be <strong>interacting with a basketball</strong> (not just posing near one or with the ball sitting in the background or foreground).</li>
-      <li><strong>AI-generated images are strictly prohibited.</strong></li>
-      <li>
-        The pet and the basketball must be <strong>fully visible in the photo</strong> — neither should be cropped or partially out of frame.
-      </li>
-      <li>
-        People may appear in the photo, but they must <strong>not touch or control the basketball</strong>. Your pet must clearly be the one interacting with it.
-      </li>
-      <li>
-        The Organizer may reject or remove submissions that prominently feature <strong>third-party trademarks,
-        logos, or branded materials</strong> that could imply sponsorship, endorsement, or affiliation — including professional sports leagues or teams.
-      </li>
-      <li>
-        Entries that are offensive, inappropriate, or otherwise violate the
-        <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">
-          Terms &amp; Conditions
-        </a>
-        may be disqualified.
-      </li>
-    </ul>
+        <h3>The important stuff (so we can accept your entry)</h3>
+        <ul>
+          <li><strong>One photo per person.</strong></li>
+          <li><strong>No AI-generated images.</strong></li>
+          <li>You must own the rights to the photo and have permission from anyone who appears.</li>
+          <li>
+            People can appear, but the photo should still clearly feature <strong>your pet + the basketball</strong>.
+          </li>
+          <li>
+            The Organizer may reject or remove submissions that prominently feature <strong>third-party trademarks,
+            logos, or branded materials</strong> that could imply sponsorship, endorsement, or affiliation — including professional sports leagues or teams.
+          </li>
+          <li>
+            Entries that are offensive, inappropriate, or otherwise violate the
+            <a href="LINK_TO_FULL_TERMS_AND_CONDITIONS" target="_blank" rel="noopener">
+              Terms &amp; Conditions
+            </a>
+            may be disqualified.
+          </li>
+        </ul>
 
         <!-- 3. KEY DATES -->
-    <h2>Key Dates</h2>
-    <ul>
-      <li><strong>Contest opens:</strong> December 15, 2025.</li>
-      <li><strong>Contest closes:</strong> January 16, 2026 at 11:59 PM ET.</li>
-      <li><strong>Winner announcement:</strong> On or before January 23, 2026 (Eastern Time).</li>
-    </ul>
+        <h2>Key Dates</h2>
+        <ul>
+          <li><strong>Contest opens:</strong> December 15, 2025.</li>
+          <li><strong>Contest closes:</strong> January 16, 2026 at 11:59 PM ET.</li>
+          <li><strong>Winner announcement:</strong> On or before January 23, 2026 (Eastern Time).</li>
+        </ul>
 
         <!-- 4. WHAT YOU CAN WIN -->
         <h2>What You Can Win</h2>
@@ -804,79 +637,57 @@
     &copy; 2025 The Action Network / Better Collective USA, Inc. All rights reserved.
   </div>
 
-  <!-- Auto-rotating slider with clickable dots + synced captions -->
+  <!-- Simple auto-rotating HERO slider with clickable dots -->
   <script>
     (function () {
-      const sliders = document.querySelectorAll('#an-mini-hoopers .an-example-slider');
-      const AUTO_INTERVAL = 4000; // ms
+      const slider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
+      if (!slider) return;
 
-      sliders.forEach((slider) => {
-        const slides = Array.from(slider.querySelectorAll('.an-example-slide'));
-        if (!slides.length) return;
+      const slides = Array.from(slider.querySelectorAll('.an-hero-slide'));
+      if (slides.length < 2) return;
 
-        const dotsContainer = slider.parentElement.querySelector('.an-slider-dots');
-        const card = slider.closest('.an-example-card');
-        const captionEl = card ? card.querySelector('.an-example-caption') : null;
+      const dotsWrap = document.querySelector('#an-mini-hoopers .an-hero-dots');
+      const AUTO_INTERVAL = 4500;
+      let index = 0;
+      let timer = null;
 
-        const dots = [];
-        let index = 0;
-        let timer = null;
-
-        function updateCaption(i) {
-          if (!captionEl) return;
-          const captionText = slides[i].dataset.caption ||
-                              captionEl.dataset.default ||
-                              captionEl.textContent;
-          captionEl.textContent = captionText;
-        }
-
-        function goToSlide(newIndex) {
-          slides[index].classList.remove('is-active');
-          if (dots[newIndex] && dots[index]) {
-            dots[index].classList.remove('is-active');
-          }
-          index = newIndex;
-          slides[index].classList.add('is-active');
-          if (dots[index]) {
-            dots[index].classList.add('is-active');
-          }
-          updateCaption(index);
-        }
-
-        // initial slide + caption
-        slides[0].classList.add('is-active');
-        updateCaption(0);
-
-        // create dots
-        if (dotsContainer) {
-          slides.forEach((_, i) => {
-            const dot = document.createElement('button');
-            dot.type = 'button';
-            dot.className = 'an-slider-dot' + (i === 0 ? ' is-active' : '');
-            dot.addEventListener('click', () => {
-              goToSlide(i);
-              if (timer) {
-                clearInterval(timer);
-                timer = startAuto();
-              }
-            });
-            dotsContainer.appendChild(dot);
-            dots.push(dot);
-          });
-        }
-
-        const autoplay = slider.dataset.autoplay === 'true';
-
-        function startAuto() {
-          if (!autoplay || slides.length < 2) return null;
-          return setInterval(() => {
-            const next = (index + 1) % slides.length;
-            goToSlide(next);
-          }, AUTO_INTERVAL);
-        }
-
-        timer = startAuto();
+      const dots = slides.map((_, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'an-hero-dot' + (i === 0 ? ' is-active' : '');
+        btn.setAttribute('aria-label', 'Show header image ' + (i + 1));
+        btn.addEventListener('click', () => {
+          goTo(i);
+          restart();
+        });
+        dotsWrap && dotsWrap.appendChild(btn);
+        return btn;
       });
+
+      function goTo(i) {
+        slides[index].classList.remove('is-active');
+        dots[index] && dots[index].classList.remove('is-active');
+
+        index = i;
+
+        slides[index].classList.add('is-active');
+        dots[index] && dots[index].classList.add('is-active');
+      }
+
+      function start() {
+        const autoplay = slider.dataset.autoplay === 'true';
+        if (!autoplay) return null;
+        return setInterval(() => {
+          goTo((index + 1) % slides.length);
+        }, AUTO_INTERVAL);
+      }
+
+      function restart() {
+        if (timer) clearInterval(timer);
+        timer = start();
+      }
+
+      timer = start();
     })();
   </script>
 </section>
