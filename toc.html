@@ -1,11 +1,10 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mini Hoopers: America’s Cutest Pet Ballers – Terms &amp; Conditions</title>
-  <meta name="description" content="Official contest terms & conditions for The Action Network." />
+  <meta name="description" content="Official contest terms &amp; conditions for The Action Network." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -25,6 +24,8 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -32,10 +33,11 @@
       color: var(--text);
       line-height: 1.55;
     }
+
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* Header (Action-style) */
+    /* Header (simplified Action-style) */
     .site-header {
       position: sticky;
       top: 0;
@@ -50,26 +52,10 @@
       gap: 12px;
       padding: 10px 16px;
     }
-    .left-icons {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #111827;
-    }
-    .icon-btn {
-      appearance: none;
-      border: 0;
-      background: transparent;
-      padding: 8px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    .icon-btn:hover { background: rgba(17,24,39,.06); }
     .brand {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       min-width: 220px;
     }
     .brand img {
@@ -77,20 +63,28 @@
       width: auto;
       display: block;
     }
-    .right-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    
-    /* Header actions (simplified terms page) */
+
     .header-actions {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       gap: 10px;
     }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     .btn-enter {
       background: linear-gradient(90deg, #10b981, #22c55e);
       color: #ffffff;
@@ -100,6 +94,9 @@
       border-color: transparent;
     }
     .btn-enter:hover { filter: brightness(0.97); }
+
+    .btn-blue { background: var(--blue); color: #ffffff; }
+
     .btn-icon {
       display: inline-flex;
       width: 22px;
@@ -121,42 +118,6 @@
       }
       .header-spacer { display: none; }
     }
-.btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 14px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn-green { background: var(--green); color: #06230f; }
-    .btn-blue { background: var(--blue); color: #ffffff; }
-    .btn-ghost { background: #eef1f7; color: #0f172a; border-color: #e0e6f2; font-weight: 700; }
-
-    .header-nav {
-      display: flex;
-      gap: 22px;
-      padding: 10px 16px 12px;
-      border-top: 1px solid var(--border);
-      overflow-x: auto;
-      scrollbar-width: thin;
-    }
-    .header-nav a {
-      color: #0f172a;
-      font-weight: 600;
-      font-size: 14px;
-      padding-bottom: 8px;
-      border-bottom: 3px solid transparent;
-      text-decoration: none;
-    }
-    .header-nav a.active {
-      border-bottom-color: var(--blue);
-    }
 
     /* Layout */
     .wrap {
@@ -167,10 +128,9 @@
       grid-template-columns: 280px 1fr;
       gap: 18px;
     }
+
     @media (max-width: 980px) {
       .wrap { grid-template-columns: 1fr; }
-      .toc { position: static; }
-      .right-actions .btn { padding: 10px 12px; font-size: 13px; }
     }
 
     .toc {
@@ -183,6 +143,7 @@
       box-shadow: var(--shadow);
       padding: 14px 14px 10px;
     }
+
     .toc-title {
       font-weight: 800;
       font-size: 13px;
@@ -191,10 +152,21 @@
       letter-spacing: .06em;
       margin-bottom: 10px;
     }
+
     .toc ul { margin: 0; padding-left: 18px; }
     .toc li { margin: 6px 0; }
     .toc a { color: #111827; font-weight: 600; }
     .toc a:hover { color: var(--blue); }
+
+    /* Mobile fix: TOC should not stick/overlay content */
+    @media (max-width: 980px) {
+      .toc {
+        position: static !important;
+        top: auto !important;
+        z-index: auto !important;
+        margin-bottom: 16px;
+      }
+    }
 
     .doc {
       background: var(--card);
@@ -204,22 +176,26 @@
       padding: 26px 26px 30px;
       overflow: hidden;
     }
+
     .doc-title {
       font-size: 30px;
       line-height: 1.15;
       margin: 0 0 14px;
       letter-spacing: -0.02em;
     }
+
     .doc h2 {
       margin: 22px 0 8px;
       font-size: 18px;
       letter-spacing: -0.01em;
+      scroll-margin-top: 110px; /* prevent sticky header from covering anchors */
     }
+
     .doc p {
       margin: 10px 0;
       color: #111827;
     }
-    .doc p strong { font-weight: 800; }
+
     .callout {
       border-left: 6px solid var(--navy);
       background: #eef3ff;
@@ -227,7 +203,9 @@
       border-radius: 12px;
       margin: 14px 0 18px;
     }
+
     .callout p { margin: 0; font-weight: 700; }
+
     .meta-row {
       display: flex;
       align-items: center;
@@ -236,6 +214,7 @@
       color: var(--muted);
       font-size: 13px;
     }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -254,26 +233,17 @@
       color: var(--muted);
       font-size: 13px;
     }
+
     footer .foot-card {
       background: transparent;
       border-top: 1px solid rgba(230,233,240,.9);
       padding-top: 14px;
     }
-    /* Mobile fix: TOC should not stick/overlay content */
-    @media (max-width: 980px) {
-  .toc {
-    position: static !important;
-    top: auto !important;
-    z-index: auto !important;
-    margin-bottom: 16px;
-  }
-}
-
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="header-top header-top-grid">
+    <div class="header-top">
       <div class="header-spacer" aria-hidden="true"></div>
 
       <a class="brand" href="https://www.actionnetwork.com/" aria-label="The Action Network (home)">
@@ -285,101 +255,115 @@
           <span class="btn-icon" aria-hidden="true">🏀</span>
           Enter the Contest
         </a>
-        <a class="btn btn-blue" href="CONTEST_PAGE_URL_HERE" target="_blank" rel="noopener">
-          Contest Page
-        </a>
+        <a class="btn btn-blue" href="CONTEST_PAGE_URL_HERE" target="_blank" rel="noopener">Contest Page</a>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    
-<nav class="toc" aria-label="Table of contents">
-  <div class="toc-title">On this page</div>
-  <ul>
-    <li><a href="#section-1-sponsor">1. Sponsor</a></li>
-<li><a href="#section-2-eligibility">2. Eligibility</a></li>
-<li><a href="#section-3-contest-period">3. Contest Period</a></li>
-<li><a href="#section-4-how-to-enter">4. How to Enter</a></li>
-<li><a href="#section-5-judging">5. Judging</a></li>
-<li><a href="#section-6-prize">6. Prize</a></li>
-<li><a href="#section-7-rights-usage">7. Rights &amp; Usage</a></li>
-<li><a href="#section-8-disqualification">8. Disqualification</a></li>
-<li><a href="#section-9-liability-release">9. Liability &amp; Release</a></li>
-<li><a href="#section-10-personal-data">10. Personal Data</a></li>
-<li><a href="#section-11-governing-law">11. Governing Law</a></li>
-<li><a href="#section-12-non-affiliation-disclaimer">12. Non-Affiliation Disclaimer</a></li>
-<li><a href="#section-13-endnotes">13. Endnotes</a></li>
-  </ul>
-</nav>
+    <nav class="toc" aria-label="Table of contents">
+      <div class="toc-title">On this page</div>
+      <ul>
+        <li><a href="#section-1-sponsor">1. Sponsor</a></li>
+        <li><a href="#section-2-eligibility">2. Eligibility</a></li>
+        <li><a href="#section-3-contest-period">3. Contest Period</a></li>
+        <li><a href="#section-4-how-to-enter">4. How to Enter</a></li>
+        <li><a href="#section-5-judging">5. Judging</a></li>
+        <li><a href="#section-6-prize">6. Prize</a></li>
+        <li><a href="#section-7-rights-usage">7. Rights &amp; Usage</a></li>
+        <li><a href="#section-8-disqualification">8. Disqualification</a></li>
+        <li><a href="#section-9-liability-release">9. Liability &amp; Release</a></li>
+        <li><a href="#section-10-personal-data">10. Personal Data</a></li>
+        <li><a href="#section-11-governing-law">11. Governing Law</a></li>
+        <li><a href="#section-12-non-affiliation-disclaimer">12. Non-Affiliation Disclaimer</a></li>
+        <li><a href="#section-13-endnotes">13. Endnotes</a></li>
+      </ul>
+    </nav>
 
     <article class="doc" aria-label="Terms and conditions document">
       <div class="meta-row">
         <span class="pill">Contest Terms &amp; Conditions</span>
         <span>Last updated: December 14, 2025</span>
       </div>
-      <h1 class='doc-title'><strong>Mini Hoopers: America’s Cutest Pet Ballers</strong><strong> – Terms &amp; Conditions</strong></h1>
-<div class='callout'><p><strong>NO PURCHASE NECESSARY TO ENTER OR WIN. VOID WHERE PROHIBITED. THIS CONTEST IS NOT SPONSORED, ENDORSED, OR AFFILIATED WITH THE NBA, ITS TEAMS, OR PLAYERS.</strong></p></div>
-<h2 id='section-1-sponsor'><strong>1. Sponsor</strong></h2>
-<p>The Contest is sponsored by The Action Network/Better Collective USA, Inc., with a registered office at 61 West 23rd Street, Second Floor, New York, New York 10010 (“Organizer”).</p>
-<h2 id='section-2-eligibility'><strong>2. Eligibility</strong></h2>
-<p>The Contest is open to legal residents of the United States only. Void where prohibited.</p>
-<p>Entrants (“Participants”) must be 18 years of age or older at the time of entry.</p>
-<p>Participants must own all rights to the photo they submit.</p>
-<p>Employees, officers, directors, and agents of the Organizer, and their immediate family members, are not eligible to participate in the Contest.</p>
-<p>By taking part in the Contest, Participants agree to these Rules and the Organizer’s .</p>
-<p>Void where prohibited.</p>
-<h2 id='section-3-contest-period'><strong>3. Contest Period</strong></h2>
-<p>The Contest begins on <strong>December 15, 2025</strong> when submissions open, and ends on <strong>January 16, 2026 </strong>at 11:59 PM ET (the “Contest Period”). </p>
-<p>Approved submissions may be added throughout the Contest Period, and any late-approved entries will be eligible for internal judging until the Contest Period ends. </p>
-<p>The potential winner will be notified on or before<strong> January 23, 2026.</strong></p>
-<h2 id='section-4-how-to-enter'><strong>4. How to Enter</strong></h2>
-<p>Participants must submit photos of their pets posing with a basketball, or doing something cute and ball-related, via the contest Google Form.</p>
-<p>All submissions will be manually reviewed by the Organizer before appearing in the public gallery.</p>
-<p>Only approved entries will be displayed and eligible for judging.</p>
-<p>Limit one entry per person.</p>
-<p>AI-generated images are strictly prohibited. Any example images, including AI-generated examples displayed in the gallery for illustrative purposes, are provided solely to guide Participants on the desired photo quality and theme. These examples do not permit or authorize Participants to submit AI-generated images, which remain strictly prohibited.</p>
-<p>The Organizer reserves the right, in its sole discretion, to reject or remove any submission that features third-party trademarks, logos, or branded materials that appear prominently or could reasonably imply sponsorship, endorsement, or affiliation with such third parties, including professional sports leagues or teams.</p>
-<h2 id='section-5-judging'><strong>5. Judging </strong></h2>
-<p>All approved entries will be reviewed and evaluated internally by a judging panel designated by the Organizer.</p>
-<p>The judging panel will select the Grand Prize winner based on criteria such as creativity, originality, overall appeal, and how well the submission aligns with the Contest theme.</p>
-<p>No public voting will take place, and Participants or members of the public will not have the ability to vote on entries.</p>
-<p>The Organizer may disqualify any entry that appears to violate these Terms &amp; Conditions or does not meet the Contest requirements.</p>
-<p>The Organizer’s decisions regarding judging, eligibility, and winner selection are final and binding.</p>
-<h2 id='section-6-prize'><strong>6. Prize</strong></h2>
-<p>The Grand Prize consists of<strong> $3,000 USD,</strong> which will be delivered via PayPal or another payment method selected by the Organizer.</p>
-<p>Prize is non-transferable and no substitutions are allowed, except at Organizer’s discretion.</p>
-<p>The Organizer may request identity verification before awarding the prize. </p>
-<p>The Organizer may require the potential winner to participate in a brief verification video call to confirm the ownership of the pet featured in the submitted photo. Failure to participate in this verification process may result in disqualification and selection of an alternate winner.</p>
-<p>The Organizer reserves the right not to award a prize if, in its sole discretion, it determines that there are insufficient eligible entries or that no entry meets the judging criteria.</p>
-<p>The Prize may be taxable depending on the applicable laws in the entrant’s state of residence. It is the entrant’s responsibility to report the prize to relevant tax authorities if required. If applicable, any required tax reporting by the Organizer will be handled in accordance with applicable laws.</p>
-<p><u>Winner Affidavit/Declaration: </u>The potential winner may be required to complete, sign, and return an affidavit of eligibility, liability release, and, if applicable, a publicity release within 7 days of notification. Failure to do so may result in disqualification and selection of an alternate winner.</p>
-<h2 id='section-7-rights-usage'><strong>7. Rights &amp; Usage</strong></h2>
-<p>By submitting a photo, entrants grant the Organizer a non-exclusive, royalty-free, worldwide license to use, reproduce, display, and distribute the photo in connection with the Contest and promotional purposes.</p>
-<p>Entrants represent and warrant that their submission does not intentionally feature or highlight any professional sports league or team trademarks and that any such marks appearing incidentally are lawful uses within a personal photograph.</p>
-<h2 id='section-8-disqualification'><strong>8. Disqualification</strong></h2>
-<p>Entries containing copyrighted material, logos, or branding from the NBA or other third parties may be disqualified.</p>
-<p>Any attempt to manipulate judging or submit multiple entries for the same pet may result in disqualification.</p>
-<p>The Organizer reserves the right to disqualify any entry that is offensive, inappropriate, or violates these Terms &amp; Conditions.</p>
-<p>Organizer’s decisions on eligibility, compliance, and judging outcomes are final and binding.</p>
-<h2 id='section-9-liability-release'><strong>9. Liability &amp; Release</strong></h2>
-<p>By participating, entrants release and hold harmless the Organizer, its affiliates, and all related parties from any liability arising out of participation in the Contest or the awarding, use, or misuse of the Prize.</p>
-<p>The Organizer is not responsible for lost, late, misdirected, or incomplete entries, or any technical or human errors in the submission or judging process.</p>
-<h2 id='section-10-personal-data'><strong>10. Personal Data </strong></h2>
-<p>Personal information collected in connection with the Contest will be used solely for administering the Contest and in accordance with Organizer’s .</p>
-<p>By participating in the Contest, entrants consent to the collection, use, and processing of their personal information by the Organizer for the purposes of administering the Contest, verifying eligibility, moderating submissions, contacting the potential winner, fulfilling the prize, and for any other purposes described in these Terms &amp; Conditions. </p>
-<p>To ensure successful participation and to distinguish you from other Participants, we may process your personal information including your email address, first name, social media handles (such as TikTok and Instagram) and any materials submitted as part of the Contest (including, without limitation, the submitted photo of the Participants pet, user generated captions, the name of the Participants pet). </p>
-<p>If you are selected as the Winner, you may be required to provide your payment details, such as  PayPal or bank account information. The processing of this personal data is necessary for the purpose of awarding the Prize. We may also request a copy of your government-issued identification to verify your eligibility to receive the prize. We may also request a video call with the Winner in order to verify the ownership of the pet. The Participant’s name may also be used for the purpose of publicly announcing the Winner of this Contest to ensure transparency.</p>
-<p>Please review our  in order to get acquainted with more details about processing your personal data, with whom we share the personal data, and with your rights and our obligations under the data protection rules.</p>
-<p>Entrants acknowledge that their submitted photos, pet names and user generated captions may be publicly displayed in the contest gallery once approved. Entrants may request deletion of their personal information after the Contest has concluded to the extent permitted by law.</p>
-<h2 id='section-11-governing-law'><strong>11. Governing Law</strong></h2>
-<p>These Terms &amp; Conditions and any disputes arising out of or relating to the Contest shall be governed by and construed in accordance with the laws of a United States jurisdiction selected at the Organizer’s discretion, without regard to its conflict-of-law principles. </p>
-<p>Entrants agree that any claims or actions relating to the Contest shall be resolved individually, without resort to class action procedures, and shall be brought exclusively in a court or other forum located in a jurisdiction chosen by the Organizer.</p>
-<h2 id='section-12-non-affiliation-disclaimer'><strong>12. Non-Affiliation Disclaimer</strong></h2>
-<p>This contest is not sponsored, endorsed, or affiliated with the NBA, its teams, or players.</p>
-<p>Any third-party trademarks, team names, logos, or branded apparel that may appear incidentally in user-submitted photos belong to their respective owners and do not imply sponsorship, endorsement, or affiliation.</p>
-<h2 id='section-13-endnotes'><strong>13. Endnotes</strong></h2>
-<p>For all questions or complaints regarding this Contest, please reach out to  </p>
+
+      <h1 class="doc-title"><strong>Mini Hoopers: America’s Cutest Pet Ballers</strong> <strong>– Terms &amp; Conditions</strong></h1>
+
+      <div class="callout">
+        <p><strong>NO PURCHASE NECESSARY TO ENTER OR WIN. VOID WHERE PROHIBITED. THIS CONTEST IS NOT SPONSORED, ENDORSED, OR AFFILIATED WITH THE NBA, ITS TEAMS, OR PLAYERS.</strong></p>
+      </div>
+
+      <h2 id="section-1-sponsor"><strong>1. Sponsor</strong></h2>
+      <p>The Contest is sponsored by The Action Network/Better Collective USA, Inc., with a registered office at 61 West 23rd Street, Second Floor, New York, New York 10010 (“Organizer”).</p>
+
+      <h2 id="section-2-eligibility"><strong>2. Eligibility</strong></h2>
+      <p>The Contest is open to legal residents of the United States only. Void where prohibited.</p>
+      <p>Entrants (“Participants”) must be 18 years of age or older at the time of entry.</p>
+      <p>Participants must own all rights to the photo they submit.</p>
+      <p>Employees, officers, directors, and agents of the Organizer, and their immediate family members, are not eligible to participate in the Contest.</p>
+      <p>By taking part in the Contest, Participants agree to these Rules and the Organizer’s <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      <p>Void where prohibited.</p>
+
+      <h2 id="section-3-contest-period"><strong>3. Contest Period</strong></h2>
+      <p>The Contest begins on December 15, 2025 when submissions open, and ends on January 16, 2026 at 11:59 PM ET (the “Contest Period”).</p>
+      <p>Approved submissions may be added throughout the Contest Period, and any late-approved entries will be eligible for internal judging until the Contest Period ends.</p>
+      <p>The potential winner will be notified on or before January 23, 2026.</p>
+
+      <h2 id="section-4-how-to-enter"><strong>4. How to Enter</strong></h2>
+      <p>Participants must submit photos of their pets posing with a basketball, or doing something cute and ball-related, via the contest Google Form.</p>
+      <p>All submissions will be manually reviewed by the Organizer before appearing in the public gallery.</p>
+      <p>Only approved entries will be displayed and eligible for judging.</p>
+      <p>Limit one entry per person.</p>
+      <p>AI-generated images are strictly prohibited. Any example images, including AI-generated examples displayed in the gallery for illustrative purposes, are provided solely to guide Participants on the desired photo quality and theme. These examples do not permit or authorize Participants to submit AI-generated images, which remain strictly prohibited.</p>
+      <p>The Organizer reserves the right, in its sole discretion, to reject or remove any submission that features third-party trademarks, logos, or branded materials that appear prominently or could reasonably imply sponsorship, endorsement, or affiliation with such third parties, including professional sports leagues or teams.</p>
+
+      <h2 id="section-5-judging"><strong>5. Judging</strong></h2>
+      <p>All approved entries will be reviewed and evaluated internally by a judging panel designated by the Organizer.</p>
+      <p>The judging panel will select the Grand Prize winner based on criteria such as creativity, originality, overall appeal, and how well the submission aligns with the Contest theme.</p>
+      <p>No public voting will take place, and Participants or members of the public will not have the ability to vote on entries.</p>
+      <p>The Organizer may disqualify any entry that appears to violate these Terms &amp; Conditions or does not meet the Contest requirements.</p>
+      <p>The Organizer’s decisions regarding judging, eligibility, and winner selection are final and binding.</p>
+
+      <h2 id="section-6-prize"><strong>6. Prize</strong></h2>
+      <p>The Grand Prize consists of $3,000 USD, which will be delivered via PayPal or another payment method selected by the Organizer.</p>
+      <p>Prize is non-transferable and no substitutions are allowed, except at Organizer’s discretion.</p>
+      <p>The Organizer may request identity verification before awarding the prize.</p>
+      <p>The Organizer may require the potential winner to participate in a brief verification video call to confirm the ownership of the pet featured in the submitted photo. Failure to participate in this verification process may result in disqualification and selection of an alternate winner.</p>
+      <p>The Organizer reserves the right not to award a prize if, in its sole discretion, it determines that there are insufficient eligible entries or that no entry meets the judging criteria.</p>
+      <p>The Prize may be taxable depending on the applicable laws in the entrant’s state of residence. It is the entrant’s responsibility to report the prize to relevant tax authorities if required. If applicable, any required tax reporting by the Organizer will be handled in accordance with applicable laws.</p>
+      <p><strong>Winner Affidavit/Declaration:</strong> The potential winner may be required to complete, sign, and return an affidavit of eligibility, liability release, and, if applicable, a publicity release within 7 days of notification. Failure to do so may result in disqualification and selection of an alternate winner.</p>
+
+      <h2 id="section-7-rights-usage"><strong>7. Rights &amp; Usage</strong></h2>
+      <p>By submitting a photo, entrants grant the Organizer a non-exclusive, royalty-free, worldwide license to use, reproduce, display, and distribute the photo in connection with the Contest and promotional purposes.</p>
+      <p>Entrants represent and warrant that their submission does not intentionally feature or highlight any professional sports league or team trademarks and that any such marks appearing incidentally are lawful uses within a personal photograph.</p>
+
+      <h2 id="section-8-disqualification"><strong>8. Disqualification</strong></h2>
+      <p>Entries containing copyrighted material, logos, or branding from the NBA or other third parties may be disqualified.</p>
+      <p>Any attempt to manipulate judging or submit multiple entries for the same pet may result in disqualification.</p>
+      <p>The Organizer reserves the right to disqualify any entry that is offensive, inappropriate, or violates these Terms &amp; Conditions.</p>
+      <p>Organizer’s decisions on eligibility, compliance, and judging outcomes are final and binding.</p>
+
+      <h2 id="section-9-liability-release"><strong>9. Liability &amp; Release</strong></h2>
+      <p>By participating, entrants release and hold harmless the Organizer, its affiliates, and all related parties from any liability arising out of participation in the Contest or the awarding, use, or misuse of the Prize.</p>
+      <p>The Organizer is not responsible for lost, late, misdirected, or incomplete entries, or any technical or human errors in the submission or judging process.</p>
+
+      <h2 id="section-10-personal-data"><strong>10. Personal Data</strong></h2>
+      <p>Personal information collected in connection with the Contest will be used solely for administering the Contest and in accordance with Organizer’s <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      <p>By participating in the Contest, entrants consent to the collection, use, and processing of their personal information by the Organizer for the purposes of administering the Contest, verifying eligibility, moderating submissions, contacting the potential winner, fulfilling the prize, and for any other purposes described in these Terms &amp; Conditions.</p>
+      <p>To ensure successful participation and to distinguish you from other Participants, we may process your personal information including your email address, first name, social media handles (such as TikTok and Instagram) and any materials submitted as part of the Contest (including, without limitation, the submitted photo of the Participants pet, user generated captions, the name of the Participants pet).</p>
+      <p>If you are selected as the Winner, you may be required to provide your payment details, such as PayPal or bank account information. The processing of this personal data is necessary for the purpose of awarding the Prize. We may also request a copy of your government-issued identification to verify your eligibility to receive the prize. We may also request a video call with the Winner in order to verify the ownership of the pet. The Participant’s name may also be used for the purpose of publicly announcing the Winner of this Contest to ensure transparency.</p>
+      <p>Please review our <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> in order to get acquainted with more details about processing your personal data, with whom we share the personal data, and with your rights and our obligations under the data protection rules.</p>
+      <p>Entrants acknowledge that their submitted photos, pet names and user generated captions may be publicly displayed in the contest gallery once approved. Entrants may request deletion of their personal information after the Contest has concluded to the extent permitted by law.</p>
+
+      <h2 id="section-11-governing-law"><strong>11. Governing Law</strong></h2>
+      <p>These Terms &amp; Conditions and any disputes arising out of or relating to the Contest shall be governed by and construed in accordance with the laws of a United States jurisdiction selected at the Organizer’s discretion, without regard to its conflict-of-law principles.</p>
+      <p>Entrants agree that any claims or actions relating to the Contest shall be resolved individually, without resort to class action procedures, and shall be brought exclusively in a court or other forum located in a jurisdiction chosen by the Organizer.</p>
+
+      <h2 id="section-12-non-affiliation-disclaimer"><strong>12. Non-Affiliation Disclaimer</strong></h2>
+      <p>This contest is not sponsored, endorsed, or affiliated with the NBA, its teams, or players.</p>
+      <p>Any third-party trademarks, team names, logos, or branded apparel that may appear incidentally in user-submitted photos belong to their respective owners and do not imply sponsorship, endorsement, or affiliation.</p>
+
+      <h2 id="section-13-endnotes"><strong>13. Endnotes</strong></h2>
+      <p>For all questions or complaints regarding this Contest, please reach out to <a href="mailto:earnedmedia@bettercollective.com">earnedmedia@bettercollective.com</a></p>
     </article>
   </main>
 
@@ -389,13 +373,5 @@
       <div style="margin-top:6px;">This page is intended for informational purposes and may be updated from time to time.</div>
     </div>
   </footer>
-
-  <!--
-    QUICK SETUP:
-    1) Replace the logo URL in the <img src="..."> near the top with your real logo URL.
-       Current placeholder: https://via.placeholder.com/140x32?text=ACTION+LOGO
-    2) Commit this file as "index.html" to your GitHub repository root (or /docs folder if configured).
-    3) Enable GitHub Pages in repo settings and point it at the branch/folder containing index.html.
-  -->
 </body>
 </html>
