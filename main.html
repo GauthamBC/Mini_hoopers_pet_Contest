@@ -444,10 +444,6 @@
       display: block;
       background: #0b1220;
     }
-    #an-mini-hoopers .an-hero-img-frame::before,
-    #an-mini-hoopers .an-carousel-stage::before {
-      pointer-events: none;
-    }
 
     .an-carousel-arrow {
       position: absolute;
@@ -868,282 +864,311 @@
   </div>
 
   <script>
-    (function () {
-      /* ===== HERO SLIDER ===== */
-      const heroSlider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
-      if (heroSlider) {
-        const slides = Array.from(heroSlider.querySelectorAll('.an-hero-slide'));
-        const dotsWrap = document.querySelector('#an-mini-hoopers .an-hero-dots');
-        const AUTO_INTERVAL = 4500;
-        let index = 0;
-        let timer = null;
+  (function () {
+    /* ===== HERO SLIDER ===== */
+    const heroSlider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
+    if (heroSlider) {
+      const slides = Array.from(heroSlider.querySelectorAll('.an-hero-slide'));
+      const dotsWrap = document.querySelector('#an-mini-hoopers .an-hero-dots');
+      const AUTO_INTERVAL = 4500;
+      let index = 0;
+      let timer = null;
 
-        if (slides.length > 1 && dotsWrap) {
-          const dots = slides.map((_, i) => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'an-hero-dot' + (i === 0 ? ' is-active' : '');
-            btn.setAttribute('aria-label', 'Show header image ' + (i + 1));
-            btn.addEventListener('click', () => {
-              goTo(i);
-              restart();
-            });
-            dotsWrap.appendChild(btn);
-            return btn;
+      if (slides.length > 1 && dotsWrap) {
+        const dots = slides.map((_, i) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'an-hero-dot' + (i === 0 ? ' is-active' : '');
+          btn.setAttribute('aria-label', 'Show header image ' + (i + 1));
+          btn.addEventListener('click', () => {
+            goTo(i);
+            restart();
           });
+          dotsWrap.appendChild(btn);
+          return btn;
+        });
 
-          function goTo(i) {
-            slides[index].classList.remove('is-active');
-            dots[index] && dots[index].classList.remove('is-active');
-            index = i;
-            slides[index].classList.add('is-active');
-            dots[index] && dots[index].classList.add('is-active');
-          }
+        function goTo(i) {
+          slides[index].classList.remove('is-active');
+          dots[index] && dots[index].classList.remove('is-active');
+          index = i;
+          slides[index].classList.add('is-active');
+          dots[index] && dots[index].classList.add('is-active');
+        }
 
-          function start() {
-            const autoplay = heroSlider.dataset.autoplay === 'true';
-            if (!autoplay) return null;
-            return setInterval(() => goTo((index + 1) % slides.length), AUTO_INTERVAL);
-          }
+        function start() {
+          const autoplay = heroSlider.dataset.autoplay === 'true';
+          if (!autoplay) return null;
+          return setInterval(() => goTo((index + 1) % slides.length), AUTO_INTERVAL);
+        }
 
-          function restart() {
-            if (timer) clearInterval(timer);
-            timer = start();
-          }
-
+        function restart() {
+          if (timer) clearInterval(timer);
           timer = start();
         }
+
+        timer = start();
+      }
+    }
+
+    /* ===== TABS ===== */
+    const tabGuidelines = document.getElementById('an-tab-guidelines');
+    const tabSubmitted = document.getElementById('an-tab-submitted');
+    const panelGuidelines = document.getElementById('an-panel-guidelines');
+    const panelSubmitted = document.getElementById('an-panel-submitted');
+
+    function setTab(which) {
+      const isGuidelines = which === 'guidelines';
+      tabGuidelines.setAttribute('aria-selected', isGuidelines ? 'true' : 'false');
+      tabSubmitted.setAttribute('aria-selected', isGuidelines ? 'false' : 'true');
+      panelGuidelines.classList.toggle('is-active', isGuidelines);
+      panelSubmitted.classList.toggle('is-active', !isGuidelines);
+    }
+
+    if (tabGuidelines && tabSubmitted && panelGuidelines && panelSubmitted) {
+      tabGuidelines.addEventListener('click', () => setTab('guidelines'));
+      tabSubmitted.addEventListener('click', () => setTab('submitted'));
+
+      document.querySelectorAll('#an-mini-hoopers [data-switch-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-switch-tab');
+          setTab(target === 'guidelines' ? 'guidelines' : 'submitted');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    }
+
+    const carouselWrap = document.getElementById('an-carousel');
+    const mainImg = document.getElementById('an-carousel-main');
+    const captionEl = document.getElementById('an-carousel-caption');
+    const countEl = document.getElementById('an-carousel-count');
+    const headingEl = document.getElementById('an-submitted-heading');
+
+    const prevMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.prev') : null;
+    const nextMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.next') : null;
+
+    const thumbStrip = document.getElementById('an-thumb-strip');
+    const thumbPrev = document.getElementById('an-thumb-prev');
+    const thumbNext = document.getElementById('an-thumb-next');
+
+    const THUMBS_PER_PAGE = 8;
+
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    function initCarousel(items) {
+      if (!items || !items.length) return;
+
+      let active = 0;
+      let page = 0;
+      const totalPages = Math.ceil(items.length / THUMBS_PER_PAGE);
+
+      function renderThumbPage() {
+        const start = page * THUMBS_PER_PAGE;
+        const end = Math.min(start + THUMBS_PER_PAGE, items.length);
+
+        if (!thumbStrip) return;
+        thumbStrip.innerHTML = "";
+
+        for (let i = start; i < end; i++) {
+          const btn = document.createElement('button');
+          btn.type = "button";
+          btn.className = "an-thumb" + (i === active ? " is-active" : "");
+          btn.setAttribute("aria-label", "View photo " + (i + 1));
+          btn.innerHTML = `<img src="${items[i].src}" alt="Thumbnail ${i + 1}" loading="lazy">`;
+          btn.addEventListener('click', () => setActive(i));
+          thumbStrip.appendChild(btn);
+        }
+
+        if (thumbPrev) thumbPrev.disabled = (page === 0);
+        if (thumbNext) thumbNext.disabled = (page >= totalPages - 1);
       }
 
-      /* ===== TABS ===== */
-      const tabGuidelines = document.getElementById('an-tab-guidelines');
-      const tabSubmitted = document.getElementById('an-tab-submitted');
-      const panelGuidelines = document.getElementById('an-panel-guidelines');
-      const panelSubmitted = document.getElementById('an-panel-submitted');
-
-      function setTab(which) {
-        const isGuidelines = which === 'guidelines';
-        tabGuidelines.setAttribute('aria-selected', isGuidelines ? 'true' : 'false');
-        tabSubmitted.setAttribute('aria-selected', isGuidelines ? 'false' : 'true');
-        panelGuidelines.classList.toggle('is-active', isGuidelines);
-        panelSubmitted.classList.toggle('is-active', !isGuidelines);
-      }
-
-      if (tabGuidelines && tabSubmitted && panelGuidelines && panelSubmitted) {
-        tabGuidelines.addEventListener('click', () => setTab('guidelines'));
-        tabSubmitted.addEventListener('click', () => setTab('submitted'));
-
-        document.querySelectorAll('#an-mini-hoopers [data-switch-tab]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const target = btn.getAttribute('data-switch-tab');
-            setTab(target === 'guidelines' ? 'guidelines' : 'submitted');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+      function syncActiveThumb() {
+        const desiredPage = Math.floor(active / THUMBS_PER_PAGE);
+        if (desiredPage !== page) {
+          page = desiredPage;
+          renderThumbPage();
+        } else if (thumbStrip) {
+          const pageStart = page * THUMBS_PER_PAGE;
+          Array.from(thumbStrip.children).forEach((el, idx) => {
+            el.classList.toggle('is-active', (pageStart + idx) === active);
           });
-        });
+        }
       }
 
-      const carouselWrap = document.getElementById('an-carousel');
-      const mainImg = document.getElementById('an-carousel-main');
-      const captionEl = document.getElementById('an-carousel-caption');
-      const countEl = document.getElementById('an-carousel-count');
-      const headingEl = document.getElementById('an-submitted-heading');
+      function setActive(i) {
+        active = clamp(i, 0, items.length - 1);
 
-      const prevMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.prev') : null;
-      const nextMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.next') : null;
+        const title = (items[active].title || ("Approved Mini Hooper #" + (active + 1))).trim();
+        const caption = (items[active].caption || "").trim();
 
-      const thumbStrip = document.getElementById('an-thumb-strip');
-      const thumbPrev = document.getElementById('an-thumb-prev');
-      const thumbNext = document.getElementById('an-thumb-next');
+        if (headingEl) headingEl.textContent = title;
+        if (captionEl) captionEl.textContent = caption;
 
-      const THUMBS_PER_PAGE = 8;
-
-      function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
-
-      function initCarousel(items) {
-        if (!items || !items.length) return;
-
-        let active = 0;
-        let page = 0;
-        const totalPages = Math.ceil(items.length / THUMBS_PER_PAGE);
-
-        function renderThumbPage() {
-          const start = page * THUMBS_PER_PAGE;
-          const end = Math.min(start + THUMBS_PER_PAGE, items.length);
-
-          thumbStrip.innerHTML = "";
-
-          for (let i = start; i < end; i++) {
-            const btn = document.createElement('button');
-            btn.type = "button";
-            btn.className = "an-thumb" + (i === active ? " is-active" : "");
-            btn.setAttribute("aria-label", "View photo " + (i + 1));
-            btn.innerHTML = `<img src="${items[i].src}" alt="Thumbnail ${i + 1}" loading="lazy">`;
-            btn.addEventListener('click', () => setActive(i));
-            thumbStrip.appendChild(btn);
-          }
-
-          if (thumbPrev) thumbPrev.disabled = (page === 0);
-          if (thumbNext) thumbNext.disabled = (page >= totalPages - 1);
+        if (mainImg) {
+          mainImg.src = items[active].src;
+          mainImg.alt = caption ? ("Mini Hooper entry: " + caption) : title;
         }
 
-        function syncActiveThumb() {
-          const desiredPage = Math.floor(active / THUMBS_PER_PAGE);
-          if (desiredPage !== page) {
-            page = desiredPage;
-            renderThumbPage();
-          } else {
-            const pageStart = page * THUMBS_PER_PAGE;
-            Array.from(thumbStrip.children).forEach((el, idx) => {
-              el.classList.toggle('is-active', (pageStart + idx) === active);
-            });
-          }
-        }
+        if (countEl) countEl.textContent = (active + 1) + " / " + items.length;
 
-        function setActive(i) {
-          active = clamp(i, 0, items.length - 1);
+        syncActiveThumb();
 
-          const title = (items[active].title || ("Approved Mini Hooper #" + (active + 1))).trim();
-          const caption = (items[active].caption || "").trim();
+        if (prevMain) prevMain.disabled = (items.length <= 1);
+        if (nextMain) nextMain.disabled = (items.length <= 1);
+      }
 
-          if (headingEl) headingEl.textContent = title;
-          if (captionEl) captionEl.textContent = caption;
+      if (prevMain) prevMain.addEventListener('click', () => setActive((active - 1 + items.length) % items.length));
+      if (nextMain) nextMain.addEventListener('click', () => setActive((active + 1) % items.length));
 
-          if (mainImg) {
-            mainImg.src = items[active].src;
-            mainImg.alt = caption ? ("Mini Hooper entry: " + caption) : title;
-          }
-
-          if (countEl) countEl.textContent = (active + 1) + " / " + items.length;
-
-          syncActiveThumb();
-
-          if (prevMain) prevMain.disabled = (items.length <= 1);
-          if (nextMain) nextMain.disabled = (items.length <= 1);
-        }
-
-        if (prevMain) prevMain.addEventListener('click', () => setActive((active - 1 + items.length) % items.length));
-        if (nextMain) nextMain.addEventListener('click', () => setActive((active + 1) % items.length));
-
-        if (thumbPrev) thumbPrev.addEventListener('click', () => {
-          page = clamp(page - 1, 0, totalPages - 1);
-          renderThumbPage();
-        });
-
-        if (thumbNext) thumbNext.addEventListener('click', () => {
-          page = clamp(page + 1, 0, totalPages - 1);
-          renderThumbPage();
-        });
-
+      if (thumbPrev) thumbPrev.addEventListener('click', () => {
+        page = clamp(page - 1, 0, totalPages - 1);
         renderThumbPage();
-        setActive(0);
-      }
+      });
 
-      /* ===== Approved Photos: load from published Google Sheet ===== */
-      const SHEET_CSV_URL =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFX7nWMq_3plmeprD6ncT1UQA1BiUYwjdh2SSnKstU3FSPKILos79nA-SAYddYV_gt2iyslYqqMWp2/pub?gid=1795204638&single=true&output=csv";
+      if (thumbNext) thumbNext.addEventListener('click', () => {
+        page = clamp(page + 1, 0, totalPages - 1);
+        renderThumbPage();
+      });
 
-      /* Robust CSV parser (keeps empty cells!) */
-      function parseCSV(text) {
-        const s = String(text || "").replace(/^\uFEFF/, "");
-        const rows = [];
-        let row = [];
-        let cur = "";
-        let inQuotes = false;
+      renderThumbPage();
+      setActive(0);
+    }
 
-        for (let i = 0; i < s.length; i++) {
-          const ch = s[i];
-          const next = s[i + 1];
+    /* ===== Approved Photos: load from published Google Sheet ===== */
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFX7nWMq_3plmeprD6ncT1UQA1BiUYwjdh2SSnKstU3FSPKILos79nA-SAYddYV_gt2iyslYqqMWp2/pub?gid=1795204638&single=true&output=csv";
 
-          if (ch === '"') {
-            if (inQuotes && next === '"') { cur += '"'; i++; }
-            else { inQuotes = !inQuotes; }
-            continue;
-          }
+    /* Robust CSV parser (keeps empty cells!) */
+    function parseCSV(text) {
+      const s = String(text || "").replace(/^\uFEFF/, "");
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
 
-          if (!inQuotes && ch === ',') { row.push(cur); cur = ""; continue; }
-          if (!inQuotes && ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ""; continue; }
-          if (!inQuotes && ch === '\r') { continue; }
+      for (let i = 0; i < s.length; i++) {
+        const ch = s[i];
+        const next = s[i + 1];
 
-          cur += ch;
+        if (ch === '"') {
+          if (inQuotes && next === '"') { cur += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+          continue;
         }
 
-        row.push(cur);
-        rows.push(row);
+        if (!inQuotes && ch === ',') { row.push(cur); cur = ""; continue; }
+        if (!inQuotes && ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ""; continue; }
+        if (!inQuotes && ch === '\r') { continue; }
 
-        while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) rows.pop();
-        return rows.map(r => r.map(c => String(c || "").trim()));
+        cur += ch;
       }
 
-      function toDirectImageUrl(url) {
-        if (!url) return "";
-        const u = String(url).trim();
-        let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
-        if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-        m = u.match(/[?&]id=([^&]+)/i);
-        if (m && m[1] && u.includes("drive.google.com")) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-        return u;
-      }
+      row.push(cur);
+      rows.push(row);
 
-      function findCol(headers, names) {
-        const lower = headers.map(h => String(h || "").trim().toLowerCase());
-        for (const n of names) {
-          const idx = lower.indexOf(String(n).toLowerCase());
-          if (idx !== -1) return idx;
+      while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) rows.pop();
+      return rows.map(r => r.map(c => String(c || "").trim()));
+    }
+
+    function toDirectImageUrl(url) {
+      if (!url) return "";
+      const u = String(url).trim();
+      let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+      if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+      m = u.match(/[?&]id=([^&]+)/i);
+      if (m && m[1] && u.includes("drive.google.com")) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+      return u;
+    }
+
+    function findCol(headers, names) {
+      const lower = headers.map(h => String(h || "").trim().toLowerCase());
+      for (const n of names) {
+        const idx = lower.indexOf(String(n).toLowerCase());
+        if (idx !== -1) return idx;
+      }
+      return -1;
+    }
+
+    async function loadApprovedEntries() {
+      const res = await fetch(SHEET_CSV_URL + "&_=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch Approved Entries CSV");
+
+      const csv = await res.text();
+      const rows = parseCSV(csv);
+      if (!rows || rows.length < 2) return [];
+
+      const headers = rows[0];
+
+      const idxCaption = findCol(headers, ["Caption"]);
+      const idxImg = findCol(headers, ["Post Img URLs", "Post Img URL", "Postimg URLs", "Postimg URL"]);
+      const idxTitle = findCol(headers, ["Approved Mini Hoopers"]);
+
+      const items = rows.slice(1).map((r, i) => {
+        const row = r.slice();
+        while (row.length < headers.length) row.push("");
+
+        const caption = idxCaption >= 0 ? (row[idxCaption] || "").trim() : "";
+        const rawImg  = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
+        const title   = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
+
+        const src = toDirectImageUrl(rawImg);
+
+        return {
+          src,
+          title: title || `Approved Mini Hooper #${i + 1}`,
+          caption
+        };
+      }).filter(x => x.src && /^https?:\/\//i.test(x.src));
+
+      return items;
+    }
+
+    loadApprovedEntries()
+      .then(items => {
+        if (items && items.length) {
+          initCarousel(items);
+        } else {
+          if (headingEl) headingEl.textContent = "No approved entries yet";
+          if (captionEl) captionEl.textContent = "";
+          if (countEl) countEl.textContent = "0 / 0";
+          if (mainImg) mainImg.removeAttribute("src");
+          if (thumbStrip) thumbStrip.innerHTML = "";
+          if (prevMain) prevMain.disabled = true;
+          if (nextMain) nextMain.disabled = true;
+          if (thumbPrev) thumbPrev.disabled = true;
+          if (thumbNext) thumbNext.disabled = true;
         }
-        return -1;
-      }
+      })
+      .catch(err => console.warn("Sheet load failed:", err));
 
-      async function loadApprovedEntries() {
-        const res = await fetch(SHEET_CSV_URL + "&_=" + Date.now(), { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch Approved Entries CSV");
+    /* ===== Force outbound links to work inside embeds (capture phase) ===== */
+    const root = document.getElementById('an-mini-hoopers');
+    if (root) {
+      root.addEventListener('click', function (e) {
+        const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a) return;
 
-        const csv = await res.text();
-        const rows = parseCSV(csv);
-        if (!rows || rows.length < 2) return [];
+        const href = a.getAttribute('href');
+        if (!href) return;
 
-        const headers = rows[0];
+        // allow mailto/tel normally
+        if (/^(mailto:|tel:)/i.test(href)) return;
 
-        const idxCaption = findCol(headers, ["Caption"]);
-        const idxImg = findCol(headers, ["Post Img URLs", "Post Img URL", "Postimg URLs", "Postimg URL"]);
-        const idxTitle = findCol(headers, ["Approved Mini Hoopers"]);
+        // Stop any parent handlers from cancelling navigation
+        e.preventDefault();
+        e.stopPropagation();
 
-        const items = rows.slice(1).map((r, i) => {
-          const row = r.slice();
-          while (row.length < headers.length) row.push("");
+        // Try to open a new tab first
+        const opened = window.open(href, '_blank', 'noopener,noreferrer');
 
-          const caption = idxCaption >= 0 ? (row[idxCaption] || "").trim() : "";
-          const rawImg  = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
-          const title   = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
+        // If popups are blocked, fall back to same-tab navigation
+        if (!opened) {
+          window.location.href = href;
+        }
+      }, true);
+    }
 
-          const src = toDirectImageUrl(rawImg);
-
-          return {
-            src,
-            title: title || `Approved Mini Hooper #${i + 1}`,
-            caption
-          };
-        }).filter(x => x.src && /^https?:\/\//i.test(x.src));
-
-        return items;
-      }
-
-      loadApprovedEntries()
-        .then(items => {
-          if (items && items.length) {
-            initCarousel(items);
-          } else {
-            if (headingEl) headingEl.textContent = "No approved entries yet";
-            if (captionEl) captionEl.textContent = "";
-            if (countEl) countEl.textContent = "0 / 0";
-            if (mainImg) mainImg.removeAttribute("src");
-            if (thumbStrip) thumbStrip.innerHTML = "";
-            if (prevMain) prevMain.disabled = true;
-            if (nextMain) nextMain.disabled = true;
-            if (thumbPrev) thumbPrev.disabled = true;
-            if (thumbNext) thumbNext.disabled = true;
-          }
-        })
-        .catch(err => console.warn("Sheet load failed:", err));
-    })();
-  </script>
+  })();
+</script>
 </section>
