@@ -950,24 +950,6 @@
         });
       }
 
-      /* ===== Approved Photos: placeholders for testing ===== */
-      const base = [
-        { src: "https://i.postimg.cc/bJgD312s/2GDP67F.jpg" },
-        { src: "https://i.postimg.cc/zX6Ltz35/S2NRRJ.jpg" },
-        { src: "https://i.postimg.cc/2jKcwtNf/H0TCR6.jpg" },
-        { src: "https://i.postimg.cc/CMqhJGy9/Header-Image-Pet-contest.jpg" }
-      ];
-
-      // Replace caption strings with real user captions later (from your sheet/API)
-      const approvedPhotos = Array.from({ length: 26 }, (_, i) => {
-        const item = base[i % base.length];
-        return {
-          src: item.src,
-          title: `Approved Mini Hooper #${i + 1}`,              // used for the H2 above image
-          caption: `User caption for entry #${i + 1} goes here` // shown below image
-        };
-      });
-
       const carouselWrap = document.getElementById('an-carousel');
       const mainImg = document.getElementById('an-carousel-main');
       const captionEl = document.getElementById('an-carousel-caption');
@@ -1064,7 +1046,95 @@
         setActive(0);
       }
 
-      initCarousel(approvedPhotos);
+      /* ===== Approved Photos: load from published Google Sheet (Approved Entries tab) ===== */
+
+      // ✅ Published CSV URL (gid must match Approved Entries)
+      const SHEET_CSV_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFX7nWMq_3plmeprD6ncT1UQA1BiUYwjdh2SSnKstU3FSPKILos79nA-SAYddYV_gt2iyslYqqMWp2/pub?gid=1795204638&single=true&output=csv";
+
+      // Basic CSV parser (handles quoted commas)
+      function parseCSV(text) {
+        return text
+          .replace(/\r\n/g, "\n")
+          .replace(/\r/g, "\n")
+          .trim()
+          .split("\n")
+          .filter(Boolean)
+          .map(line =>
+            (line.match(/("([^"]|"")*"|[^,])+/g) || []).map(cell =>
+              cell.replace(/^"|"$/g, "").replace(/""/g, '"').trim()
+            )
+          );
+      }
+
+      // Convert Drive "open?id=" (or /file/d/) to an <img>-friendly URL
+      function toDirectImageUrl(url) {
+        if (!url) return "";
+        const u = String(url).trim();
+
+        // https://drive.google.com/file/d/FILEID/view...
+        let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+        if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+
+        // https://drive.google.com/open?id=FILEID
+        m = u.match(/[?&]id=([^&]+)/i);
+        if (m && m[1] && u.includes("drive.google.com")) {
+          return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+        }
+
+        return u; // already a normal URL
+      }
+
+      async function loadApprovedEntries() {
+        const res = await fetch(SHEET_CSV_URL + "&_=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch Approved Entries CSV");
+
+        const csv = await res.text();
+        const rows = parseCSV(csv);
+
+        // headers row is index 0; data starts at index 1 (row 2 in sheet)
+        // A=0 B=1 C=2 D=3 E=4 F=5 G=6 H=7
+        const items = rows.slice(1).map((r, idx) => {
+          const caption = (r[5] || "").trim(); // F: Caption
+          const rawImg  = (r[6] || "").trim(); // G: Approved Images
+          const title   = (r[7] || "").trim(); // H: Approved Mini Hoopers
+
+          const src = toDirectImageUrl(rawImg);
+
+          return {
+            src,
+            title: title || `Approved Mini Hooper #${idx + 1}`,
+            caption
+          };
+        })
+        .filter(x => x.src && /^https?:\/\//i.test(x.src));
+
+        return items;
+      }
+
+      // Run it
+      loadApprovedEntries()
+        .then(items => {
+          if (items && items.length) {
+            initCarousel(items);
+          } else {
+            // Optional: show "empty" state
+            if (headingEl) headingEl.textContent = "No approved entries yet";
+            if (captionEl) captionEl.textContent = "";
+            if (countEl) countEl.textContent = "0 / 0";
+            if (mainImg) mainImg.removeAttribute("src");
+            if (thumbStrip) thumbStrip.innerHTML = "";
+            if (prevMain) prevMain.disabled = true;
+            if (nextMain) nextMain.disabled = true;
+            if (thumbPrev) thumbPrev.disabled = true;
+            if (thumbNext) thumbNext.disabled = true;
+          }
+        })
+        .catch(err => {
+          console.warn("Sheet load failed:", err);
+          // Optional: keep UI empty on error
+        });
+
     })();
   </script>
 </section>
