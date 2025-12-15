@@ -1,0 +1,343 @@
+<section id="an-mini-hoopers">
+  <style>
+    #an-mini-hoopers{
+      --an-green:#009B5E; --an-card-bg:#ffffff; --an-card-border:#e5e7eb;
+      --an-text-main:#111827; --an-text-muted:#4b5563; --an-accent:#2563eb;
+      --an-max-width:1240px; --an-main-width:1040px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+      margin:0; padding:0; background:#ffffff; color:var(--an-text-main);
+    }
+    #an-mini-hoopers *{ box-sizing:border-box; }
+
+    .an-main-wrap{ background:#f3f4f6; padding:1.25rem 0 2rem; }
+    .an-tabs-wrap{ max-width:none; padding:0; }
+    .an-tabs{ background:#fff; border:1px solid var(--an-card-border); box-shadow:0 10px 26px rgba(15,23,42,.10); overflow:hidden; width:100%; }
+    .an-tabs-bar{ display:flex; background:#fff; border-bottom:1px solid var(--an-card-border); }
+
+    .an-tab-btn{
+      flex:1 1 0; appearance:none; background:transparent; border:none;
+      padding:.95rem 1rem; font-weight:700; font-size:.95rem; cursor:pointer; color:#111827;
+      transition:background-color .15s ease, color .15s ease;
+      text-align:center;
+    }
+    .an-tabs-bar a.an-tab-btn{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; border-bottom:none; }
+    .an-tab-btn:hover{ background:#f3f4f6; }
+    .an-tab-btn[aria-selected="true"]{ background:#e7fff1; color:#007548; box-shadow:inset 0 -3px 0 #009B5E; cursor:default; }
+
+    .an-main{
+      width:100%; max-width:var(--an-max-width); margin:16px auto 0;
+      padding:1.75rem 0 2rem; background:var(--an-card-bg);
+      box-shadow:0 -4px 18px rgba(0,0,0,.12); border:1px solid var(--an-card-border);
+      color:var(--an-text-main);
+    }
+    .an-main-inner{ max-width:var(--an-main-width); margin:0 auto; padding:0 2.1rem 0; }
+
+    h2{ color:#111827; margin:0 0 .9rem; font-size:1.5rem; line-height:1.3; text-align:left; }
+    p{ margin:0 0 1rem; font-size:1.04rem; line-height:1.7; color:var(--an-text-muted); text-align:left; }
+    a{ color:var(--an-accent); text-decoration:none; border-bottom:1px dotted rgba(37,99,235,.5); }
+    a:hover{ color:#1d4ed8; border-bottom-color:rgba(37,99,235,.9); }
+    .an-tabs-bar a.an-tab-btn{ border-bottom:none !important; }
+
+    .an-gallery-intro{ margin-top:0; margin-bottom:.6rem; }
+
+    /* Carousel (same as your existing) */
+    .an-carousel{ margin-top:1.25rem; }
+    .an-carousel-stage{ position:relative; border-radius:16px; overflow:hidden; background:#0b1220; border:1px solid #e5e7eb; box-shadow:0 12px 30px rgba(15,23,42,.10); }
+    .an-carousel-stage::before{ content:""; position:absolute; inset:10px; border-radius:12px; border:1px solid rgba(255,255,255,.08); pointer-events:none; z-index:2; }
+    .an-carousel-main{ width:100%; aspect-ratio:16/9; object-fit:contain; display:block; background:#0b1220; }
+    .an-carousel-arrow{
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:44px; height:44px; border-radius:999px; border:1px solid rgba(255,255,255,.25);
+      background:rgba(2,6,23,.55); color:#fff; cursor:pointer; z-index:3;
+      display:inline-flex; align-items:center; justify-content:center; font-size:1.35rem;
+    }
+    .an-carousel-arrow.prev{ left:14px; } .an-carousel-arrow.next{ right:14px; }
+    .an-carousel-arrow:disabled{ opacity:.35; cursor:not-allowed; }
+
+    .an-carousel-meta{ display:flex; justify-content:space-between; gap:1rem; align-items:baseline; margin-top:.9rem; }
+    .an-carousel-caption{ margin:0; font-weight:600; color:#111827; font-size:1rem; line-height:1.35; }
+    .an-carousel-count{ margin:0; color:#6b7280; font-size:.9rem; }
+
+    .an-thumb-row{ margin-top:.85rem; display:flex; align-items:center; gap:.6rem; }
+    .an-thumb-pager{
+      width:38px; height:38px; border-radius:999px; border:1px solid rgba(17,24,39,.12);
+      background:#fff; color:#111827; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+      font-size:1.25rem; box-shadow:0 8px 18px rgba(15,23,42,.08);
+    }
+    .an-thumb-pager:disabled{ opacity:.35; cursor:not-allowed; }
+
+    .an-thumb-window{ overflow:hidden; flex:1 1 auto; }
+    .an-thumb-strip{ display:grid; grid-template-columns:repeat(8, minmax(0, 1fr)); gap:.6rem; align-items:center; }
+    .an-thumb{ width:100%; aspect-ratio:3/2; border-radius:10px; overflow:hidden; border:2px solid transparent; cursor:pointer; background:#111827; }
+    .an-thumb.is-active{ border-color:#009B5E; }
+    .an-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    @media (max-width:900px){ .an-thumb-strip{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
+    @media (max-width:700px){
+      .an-main-inner{ padding-left:1.4rem; padding-right:1.4rem; }
+      .an-thumb-strip{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
+
+  <div class="an-main-wrap">
+    <div class="an-tabs-wrap">
+      <div class="an-tabs" role="tablist" aria-label="Mini Hoopers tabs">
+        <div class="an-tabs-bar">
+          <a class="an-tab-btn" role="tab" aria-selected="false" href="https://www.actionnetwork.com/article/p/603983879#mh-guidelines" target="_top" rel="noopener noreferrer">
+            Contest Guidelines
+          </a>
+          <button class="an-tab-btn" type="button" role="tab" aria-selected="true">
+            Submitted Photos
+          </button>
+        </div>
+
+        <div class="an-main">
+          <div class="an-main-inner">
+            <p class="an-gallery-intro">
+              This gallery shows <strong>approved</strong> Mini Hoopers entries. Check back as new submissions get reviewed!
+            </p>
+
+            <h2 id="an-submitted-heading">Approved Mini Hooper #1</h2>
+
+            <div class="an-carousel" id="an-carousel">
+              <div class="an-carousel-stage">
+                <button class="an-carousel-arrow prev" type="button" aria-label="Previous photo">‹</button>
+                <img class="an-carousel-main" id="an-carousel-main" src="" alt="Approved Mini Hoopers entry">
+                <button class="an-carousel-arrow next" type="button" aria-label="Next photo">›</button>
+              </div>
+
+              <div class="an-carousel-meta">
+                <p class="an-carousel-caption" id="an-carousel-caption"></p>
+                <p class="an-carousel-count" id="an-carousel-count">1 / 1</p>
+              </div>
+
+              <div class="an-thumb-row" aria-label="Thumbnail navigation">
+                <button class="an-thumb-pager" id="an-thumb-prev" type="button" aria-label="Previous thumbnails">‹</button>
+                <div class="an-thumb-window">
+                  <div class="an-thumb-strip" id="an-thumb-strip"></div>
+                </div>
+                <button class="an-thumb-pager" id="an-thumb-next" type="button" aria-label="Next thumbnails">›</button>
+              </div>
+            </div>
+
+            <p style="margin-top:1rem;color:#6b7280;">
+              Only approved entries appear here. If your photo isn’t visible yet, it may still be in review.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    const carouselWrap = document.getElementById('an-carousel');
+    const mainImg = document.getElementById('an-carousel-main');
+    const captionEl = document.getElementById('an-carousel-caption');
+    const countEl = document.getElementById('an-carousel-count');
+    const headingEl = document.getElementById('an-submitted-heading');
+
+    const prevMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.prev') : null;
+    const nextMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.next') : null;
+
+    const thumbStrip = document.getElementById('an-thumb-strip');
+    const thumbPrev = document.getElementById('an-thumb-prev');
+    const thumbNext = document.getElementById('an-thumb-next');
+
+    const THUMBS_PER_PAGE = 8;
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    function initCarousel(items) {
+      if (!items || !items.length) return;
+
+      let active = 0;
+      let page = 0;
+      const totalPages = Math.ceil(items.length / THUMBS_PER_PAGE);
+
+      function renderThumbPage() {
+        const start = page * THUMBS_PER_PAGE;
+        const end = Math.min(start + THUMBS_PER_PAGE, items.length);
+        if (!thumbStrip) return;
+
+        thumbStrip.innerHTML = "";
+        for (let i = start; i < end; i++) {
+          const btn = document.createElement('button');
+          btn.type = "button";
+          btn.className = "an-thumb" + (i === active ? " is-active" : "");
+          btn.setAttribute("aria-label", "View photo " + (i + 1));
+          btn.innerHTML = `<img src="${items[i].src}" alt="Thumbnail ${i + 1}" loading="lazy">`;
+          btn.addEventListener('click', () => setActive(i));
+          thumbStrip.appendChild(btn);
+        }
+        if (thumbPrev) thumbPrev.disabled = (page === 0);
+        if (thumbNext) thumbNext.disabled = (page >= totalPages - 1);
+      }
+
+      function syncActiveThumb() {
+        const desiredPage = Math.floor(active / THUMBS_PER_PAGE);
+        if (desiredPage !== page) { page = desiredPage; renderThumbPage(); return; }
+        if (thumbStrip) {
+          const pageStart = page * THUMBS_PER_PAGE;
+          Array.from(thumbStrip.children).forEach((el, idx) => {
+            el.classList.toggle('is-active', (pageStart + idx) === active);
+          });
+        }
+      }
+
+      function setActive(i) {
+        active = clamp(i, 0, items.length - 1);
+
+        const title = (items[active].title || ("Approved Mini Hooper #" + (active + 1))).trim();
+        const caption = (items[active].caption || "").trim();
+
+        if (headingEl) headingEl.textContent = title;
+        if (captionEl) captionEl.textContent = caption;
+
+        if (mainImg) {
+          mainImg.src = items[active].src;
+          mainImg.alt = caption ? ("Mini Hooper entry: " + caption) : title;
+        }
+
+        if (countEl) countEl.textContent = (active + 1) + " / " + items.length;
+        syncActiveThumb();
+
+        if (prevMain) prevMain.disabled = (items.length <= 1);
+        if (nextMain) nextMain.disabled = (items.length <= 1);
+      }
+
+      if (prevMain) prevMain.addEventListener('click', () => setActive((active - 1 + items.length) % items.length));
+      if (nextMain) nextMain.addEventListener('click', () => setActive((active + 1) % items.length));
+
+      if (thumbPrev) thumbPrev.addEventListener('click', () => { page = clamp(page - 1, 0, totalPages - 1); renderThumbPage(); syncActiveThumb(); });
+      if (thumbNext) thumbNext.addEventListener('click', () => { page = clamp(page + 1, 0, totalPages - 1); renderThumbPage(); syncActiveThumb(); });
+
+      renderThumbPage();
+      setActive(0);
+    }
+
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFX7nWMq_3plmeprD6ncT1UQA1BiUYwjdh2SSnKstU3FSPKILos79nA-SAYddYV_gt2iyslYqqMWp2/pub?gid=1795204638&single=true&output=csv";
+
+    function parseCSV(text) {
+      const s = String(text || "").replace(/^\uFEFF/, "");
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < s.length; i++) {
+        const ch = s[i];
+        const next = s[i + 1];
+        if (ch === '"') {
+          if (inQuotes && next === '"') { cur += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+          continue;
+        }
+        if (!inQuotes && ch === ',') { row.push(cur); cur = ""; continue; }
+        if (!inQuotes && ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ""; continue; }
+        if (!inQuotes && ch === '\r') { continue; }
+        cur += ch;
+      }
+      row.push(cur); rows.push(row);
+      while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) rows.pop();
+      return rows.map(r => r.map(c => String(c || "").trim()));
+    }
+
+    function toDirectImageUrl(url) {
+      if (!url) return "";
+      const u = String(url).trim();
+      let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+      if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+      m = u.match(/[?&]id=([^&]+)/i);
+      if (m && m[1] && u.includes("drive.google.com")) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+      return u;
+    }
+
+    function findCol(headers, names) {
+      const lower = headers.map(h => String(h || "").trim().toLowerCase());
+      for (const n of names) {
+        const idx = lower.indexOf(String(n).toLowerCase());
+        if (idx !== -1) return idx;
+      }
+      return -1;
+    }
+
+    async function loadApprovedEntries() {
+      const res = await fetch(SHEET_CSV_URL + "&_=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch Approved Entries CSV");
+
+      const csv = await res.text();
+      const rows = parseCSV(csv);
+      if (!rows || rows.length < 2) return [];
+
+      const headers = rows[0];
+      const idxCaption = findCol(headers, ["Caption"]);
+      const idxImg = findCol(headers, ["Post Img URLs","Post Img URL","Postimg URLs","Postimg URL"]);
+      const idxTitle = findCol(headers, ["Approved Mini Hoopers"]);
+
+      return rows.slice(1).map((r, i) => {
+        const row = r.slice();
+        while (row.length < headers.length) row.push("");
+
+        const caption = idxCaption >= 0 ? (row[idxCaption] || "").trim() : "";
+        const rawImg  = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
+        const title   = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
+
+        const src = toDirectImageUrl(rawImg);
+
+        return { src, title: title || `Approved Mini Hooper #${i + 1}`, caption };
+      }).filter(x => x.src && /^https?:\/\//i.test(x.src));
+    }
+
+    loadApprovedEntries()
+      .then(items => {
+        if (items && items.length) {
+          initCarousel(items);
+        } else {
+          if (headingEl) headingEl.textContent = "No approved entries yet";
+          if (captionEl) captionEl.textContent = "";
+          if (countEl) countEl.textContent = "0 / 0";
+          if (mainImg) mainImg.removeAttribute("src");
+          if (thumbStrip) thumbStrip.innerHTML = "";
+          if (prevMain) prevMain.disabled = true;
+          if (nextMain) nextMain.disabled = true;
+          if (thumbPrev) thumbPrev.disabled = true;
+          if (thumbNext) thumbNext.disabled = true;
+        }
+      })
+      .catch(err => console.warn("Sheet load failed:", err));
+
+    /* Force outbound links to new tab — BUT do not hijack target=_top/_parent */
+    function openInNewTab(url) {
+      try {
+        const w = window.open(url, '_blank', 'noopener,noreferrer');
+        if (w) { try { w.opener = null; } catch (_) {} return true; }
+      } catch (_) {}
+      return false;
+    }
+
+    const root = document.getElementById('an-mini-hoopers');
+    if (root) {
+      root.addEventListener('click', function (e) {
+        const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (!a) return;
+
+        const href = a.getAttribute('href');
+        if (!href) return;
+
+        if (/^(mailto:|tel:)/i.test(href)) return;
+
+        const tgt = (a.getAttribute('target') || '').toLowerCase();
+        if (tgt === '_top' || tgt === '_parent') return; // ✅ let the parent jump happen
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const ok = openInNewTab(href);
+        if (!ok) (window.top || window).location.href = href;
+      }, true);
+    }
+  })();
+  </script>
+</section>
