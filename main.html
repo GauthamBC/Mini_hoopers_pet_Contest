@@ -436,7 +436,7 @@
       z-index: 2;
     }
 
-    /* UPDATED: contain so portrait/square fits in landscape with black padding */
+    /* contain so portrait/square fits in landscape with black padding */
     .an-carousel-main {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -485,7 +485,6 @@
       margin-top: 0.9rem;
     }
 
-    /* caption text (below image) */
     .an-carousel-caption {
       margin: 0;
       font-weight: 600;
@@ -577,15 +576,16 @@
     /* Keeps spacing tight between intro and H2 */
     #an-mini-hoopers #an-panel-submitted .an-gallery-intro { margin-bottom: 0.6rem; }
     #an-mini-hoopers #an-panel-submitted #an-submitted-heading { margin-top: 0; }
+
+    /* ✅ Make tabs area stretch full width like the hero */
     #an-mini-hoopers .an-tabs-wrap{
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  
-  #an-mini-hoopers .an-tabs{
-    width: 100%;
-  }
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    #an-mini-hoopers .an-tabs{
+      width: 100%;
+    }
   </style>
 
   <div class="an-hero">
@@ -634,7 +634,8 @@
       </div>
 
       <div class="an-hero-actions">
-        <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener">
+        <!-- ✅ UPDATED: target="_top" so links work inside Action Network embeds -->
+        <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
           <span class="an-btn-icon">🏀</span>
           <span>Enter the Contest</span>
         </a>
@@ -642,7 +643,7 @@
         <a
           href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
           class="an-btn an-btn-ghost"
-          target="_blank"
+          target="_top"
           rel="noopener"
         >
           Terms &amp; Conditions
@@ -674,7 +675,7 @@
               <h2>How to Enter</h2>
               <p>
                 To enter, complete the official
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" target="_blank" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" target="_top" rel="noopener">
                   Mini Hoopers: America’s Cutest Pet Ballers Entry Form
                 </a>.
               </p>
@@ -684,11 +685,7 @@
                 <li>Provide your name, email address, and any requested social media handles.</li>
                 <li>
                   Confirm you are a <strong>legal U.S. resident aged 18+</strong> and agree to the
-                  <a
-                    href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
-                    target="_blank"
-                    rel="noopener"
-                  >
+                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_top" rel="noopener">
                     Terms &amp; Conditions
                   </a>.
                 </li>
@@ -740,11 +737,7 @@
                 </li>
                 <li>
                   Entries that are offensive, inappropriate, or otherwise violate the
-                  <a
-                    href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
-                    target="_blank"
-                    rel="noopener"
-                  >
+                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_top" rel="noopener">
                     Terms &amp; Conditions
                   </a>
                   may be disqualified.
@@ -791,25 +784,15 @@
               <p>
                 Personal information collected in connection with the Contest will be used solely for administering the Contest and in
                 accordance with the Organizer’s
-                <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
-              </p>
-              <p class="an-note">
-                This may include your email address, first name, social media handles, and any materials submitted as part of the Contest
-                (including your pet’s name, photo, and captions). If you are selected as the potential winner, you may be asked to provide
-                your PayPal details and a copy of a government-issued ID to verify eligibility and award the prize.
+                <a href="https://www.actionnetwork.com/privacy" target="_top" rel="noopener">Privacy Policy</a>.
               </p>
 
               <div class="an-cta-row">
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
                   Enter the Contest
                 </a>
 
-                <a
-                  href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
-                  class="an-btn an-btn-ghost"
-                  target="_blank"
-                  rel="noopener"
-                >
+                <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" class="an-btn an-btn-ghost" target="_top" rel="noopener">
                   View Full Terms &amp; Conditions
                 </a>
               </div>
@@ -857,7 +840,7 @@
               </div>
 
               <div class="an-cta-row" style="margin-top:1.6rem;">
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
                   Enter the Contest
                 </a>
                 <button type="button" class="an-btn an-btn-ghost" data-switch-tab="guidelines">
@@ -1057,7 +1040,7 @@
 
       /* Robust CSV parser (keeps empty cells!) */
       function parseCSV(text) {
-        const s = String(text || "").replace(/^\uFEFF/, ""); // strip BOM if present
+        const s = String(text || "").replace(/^\uFEFF/, "");
         const rows = [];
         let row = [];
         let cur = "";
@@ -1068,61 +1051,32 @@
           const next = s[i + 1];
 
           if (ch === '"') {
-            if (inQuotes && next === '"') { // escaped quote
-              cur += '"';
-              i++;
-            } else {
-              inQuotes = !inQuotes;
-            }
+            if (inQuotes && next === '"') { cur += '"'; i++; }
+            else { inQuotes = !inQuotes; }
             continue;
           }
 
-          if (!inQuotes && ch === ',') {
-            row.push(cur);
-            cur = "";
-            continue;
-          }
-
-          if (!inQuotes && ch === '\n') {
-            row.push(cur);
-            rows.push(row);
-            row = [];
-            cur = "";
-            continue;
-          }
-
-          if (!inQuotes && ch === '\r') {
-            continue; // ignore CR (we handle LF)
-          }
+          if (!inQuotes && ch === ',') { row.push(cur); cur = ""; continue; }
+          if (!inQuotes && ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ""; continue; }
+          if (!inQuotes && ch === '\r') { continue; }
 
           cur += ch;
         }
 
-        // flush last cell
         row.push(cur);
         rows.push(row);
 
-        // trim trailing completely empty rows
-        while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) {
-          rows.pop();
-        }
-
+        while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) rows.pop();
         return rows.map(r => r.map(c => String(c || "").trim()));
       }
 
-      // Convert Drive "open?id=" (or /file/d/) to an <img>-friendly URL (safe to keep)
       function toDirectImageUrl(url) {
         if (!url) return "";
         const u = String(url).trim();
-
         let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
         if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-
         m = u.match(/[?&]id=([^&]+)/i);
-        if (m && m[1] && u.includes("drive.google.com")) {
-          return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-        }
-
+        if (m && m[1] && u.includes("drive.google.com")) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
         return u;
       }
 
@@ -1145,22 +1099,17 @@
 
         const headers = rows[0];
 
-        // Your requested mapping:
-        // F = Caption
-        // H = Post Img URLs  (image src)
-        // I = Approved Mini Hoopers (title)
         const idxCaption = findCol(headers, ["Caption"]);
         const idxImg = findCol(headers, ["Post Img URLs", "Post Img URL", "Postimg URLs", "Postimg URL"]);
         const idxTitle = findCol(headers, ["Approved Mini Hoopers"]);
 
         const items = rows.slice(1).map((r, i) => {
-          // pad row so indexes always exist even if trailing blanks are missing
           const row = r.slice();
           while (row.length < headers.length) row.push("");
 
           const caption = idxCaption >= 0 ? (row[idxCaption] || "").trim() : "";
-          const rawImg = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
-          const title = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
+          const rawImg  = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
+          const title   = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
 
           const src = toDirectImageUrl(rawImg);
 
@@ -1190,10 +1139,7 @@
             if (thumbNext) thumbNext.disabled = true;
           }
         })
-        .catch(err => {
-          console.warn("Sheet load failed:", err);
-        });
-
+        .catch(err => console.warn("Sheet load failed:", err));
     })();
   </script>
 </section>
