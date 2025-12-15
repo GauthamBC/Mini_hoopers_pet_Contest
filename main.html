@@ -436,11 +436,13 @@
       z-index: 2;
     }
 
+    /* UPDATED: contain so portrait/square fits in landscape with black padding */
     .an-carousel-main {
       width: 100%;
       aspect-ratio: 16 / 9;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
+      background: #0b1220;
     }
 
     .an-carousel-arrow {
@@ -483,7 +485,7 @@
       margin-top: 0.9rem;
     }
 
-    /* NEW: caption text (below image) */
+    /* caption text (below image) */
     .an-carousel-caption {
       margin: 0;
       font-weight: 600;
@@ -598,10 +600,9 @@
             </div>
             <div class="an-hero-slide">
               <img src="https://i.postimg.cc/cHV8nw5g/Dog-with-ball-rect.png" alt="Dog with Basketball" loading="lazy">
-            </div>  
-              <div class="an-hero-slide">
-                <img src="https://i.postimg.cc/B6D2NmDf/Cat-with-ball-rect.png" alt="Cat with basketball" loading="lazy">
-              </div>
+            </div>
+            <div class="an-hero-slide">
+              <img src="https://i.postimg.cc/B6D2NmDf/Cat-with-ball-rect.png" alt="Cat with basketball" loading="lazy">
             </div>
           </div>
         </div>
@@ -629,7 +630,6 @@
           <span>Enter the Contest</span>
         </a>
 
-        <!-- UPDATED: Terms & Conditions now links to your external T&C page -->
         <a
           href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
           class="an-btn an-btn-ghost"
@@ -795,7 +795,6 @@
                   Enter the Contest
                 </a>
 
-                <!-- UPDATED: Full T&C button now links to your external T&C page -->
                 <a
                   href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
                   class="an-btn an-btn-ghost"
@@ -812,7 +811,6 @@
                 user-submitted photos belong to their respective owners and do not imply sponsorship, endorsement, or affiliation.
               </p>
 
-              <!-- Kept for compatibility; no longer used as an anchor since T&C is external now -->
               <div id="an-mini-hoopers-terms"></div>
             </div>
           </div>
@@ -826,7 +824,6 @@
                 This gallery shows <strong>approved</strong> Mini Hoopers entries. Check back as new submissions get reviewed!
               </p>
 
-              <!-- H2 stays ABOVE the image -->
               <h2 id="an-submitted-heading">Approved Mini Hooper #1</h2>
 
               <div class="an-carousel" id="an-carousel">
@@ -837,7 +834,6 @@
                 </div>
 
                 <div class="an-carousel-meta">
-                  <!-- Caption from user goes HERE (below image) -->
                   <p class="an-carousel-caption" id="an-carousel-caption"></p>
                   <p class="an-carousel-count" id="an-carousel-count">1 / 1</p>
                 </div>
@@ -1013,8 +1009,8 @@
           const title = (items[active].title || ("Approved Mini Hooper #" + (active + 1))).trim();
           const caption = (items[active].caption || "").trim();
 
-          if (headingEl) headingEl.textContent = title;        // H2 above image
-          if (captionEl) captionEl.textContent = caption;      // caption below image
+          if (headingEl) headingEl.textContent = title;
+          if (captionEl) captionEl.textContent = caption;
 
           if (mainImg) {
             mainImg.src = items[active].src;
@@ -1046,43 +1042,88 @@
         setActive(0);
       }
 
-      /* ===== Approved Photos: load from published Google Sheet (Approved Entries tab) ===== */
-
-      // ✅ Published CSV URL (gid must match Approved Entries)
+      /* ===== Approved Photos: load from published Google Sheet ===== */
       const SHEET_CSV_URL =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFX7nWMq_3plmeprD6ncT1UQA1BiUYwjdh2SSnKstU3FSPKILos79nA-SAYddYV_gt2iyslYqqMWp2/pub?gid=1795204638&single=true&output=csv";
 
-      // Basic CSV parser (handles quoted commas)
+      /* Robust CSV parser (keeps empty cells!) */
       function parseCSV(text) {
-        return text
-          .replace(/\r\n/g, "\n")
-          .replace(/\r/g, "\n")
-          .trim()
-          .split("\n")
-          .filter(Boolean)
-          .map(line =>
-            (line.match(/("([^"]|"")*"|[^,])+/g) || []).map(cell =>
-              cell.replace(/^"|"$/g, "").replace(/""/g, '"').trim()
-            )
-          );
+        const s = String(text || "").replace(/^\uFEFF/, ""); // strip BOM if present
+        const rows = [];
+        let row = [];
+        let cur = "";
+        let inQuotes = false;
+
+        for (let i = 0; i < s.length; i++) {
+          const ch = s[i];
+          const next = s[i + 1];
+
+          if (ch === '"') {
+            if (inQuotes && next === '"') { // escaped quote
+              cur += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+            continue;
+          }
+
+          if (!inQuotes && ch === ',') {
+            row.push(cur);
+            cur = "";
+            continue;
+          }
+
+          if (!inQuotes && ch === '\n') {
+            row.push(cur);
+            rows.push(row);
+            row = [];
+            cur = "";
+            continue;
+          }
+
+          if (!inQuotes && ch === '\r') {
+            continue; // ignore CR (we handle LF)
+          }
+
+          cur += ch;
+        }
+
+        // flush last cell
+        row.push(cur);
+        rows.push(row);
+
+        // trim trailing completely empty rows
+        while (rows.length && rows[rows.length - 1].every(c => String(c || "").trim() === "")) {
+          rows.pop();
+        }
+
+        return rows.map(r => r.map(c => String(c || "").trim()));
       }
 
-      // Convert Drive "open?id=" (or /file/d/) to an <img>-friendly URL
+      // Convert Drive "open?id=" (or /file/d/) to an <img>-friendly URL (safe to keep)
       function toDirectImageUrl(url) {
         if (!url) return "";
         const u = String(url).trim();
 
-        // https://drive.google.com/file/d/FILEID/view...
         let m = u.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
         if (m && m[1]) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
 
-        // https://drive.google.com/open?id=FILEID
         m = u.match(/[?&]id=([^&]+)/i);
         if (m && m[1] && u.includes("drive.google.com")) {
           return `https://drive.google.com/uc?export=view&id=${m[1]}`;
         }
 
-        return u; // already a normal URL
+        return u;
+      }
+
+      function findCol(headers, names) {
+        const lower = headers.map(h => String(h || "").trim().toLowerCase());
+        for (const n of names) {
+          const idx = lower.indexOf(String(n).toLowerCase());
+          if (idx !== -1) return idx;
+        }
+        return -1;
       }
 
       async function loadApprovedEntries() {
@@ -1091,34 +1132,44 @@
 
         const csv = await res.text();
         const rows = parseCSV(csv);
+        if (!rows || rows.length < 2) return [];
 
-        // headers row is index 0; data starts at index 1 (row 2 in sheet)
-        // A=0 B=1 C=2 D=3 E=4 F=5 G=6 H=7
-        const items = rows.slice(1).map((r, idx) => {
-          const caption = (r[5] || "").trim(); // F: Caption
-          const rawImg  = (r[6] || "").trim(); // G: Approved Images
-          const title   = (r[7] || "").trim(); // H: Approved Mini Hoopers
+        const headers = rows[0];
+
+        // Your requested mapping:
+        // F = Caption
+        // H = Post Img URLs  (image src)
+        // I = Approved Mini Hoopers (title)
+        const idxCaption = findCol(headers, ["Caption"]);
+        const idxImg = findCol(headers, ["Post Img URLs", "Post Img URL", "Postimg URLs", "Postimg URL"]);
+        const idxTitle = findCol(headers, ["Approved Mini Hoopers"]);
+
+        const items = rows.slice(1).map((r, i) => {
+          // pad row so indexes always exist even if trailing blanks are missing
+          const row = r.slice();
+          while (row.length < headers.length) row.push("");
+
+          const caption = idxCaption >= 0 ? (row[idxCaption] || "").trim() : "";
+          const rawImg = idxImg >= 0 ? (row[idxImg] || "").trim() : "";
+          const title = idxTitle >= 0 ? (row[idxTitle] || "").trim() : "";
 
           const src = toDirectImageUrl(rawImg);
 
           return {
             src,
-            title: title || `Approved Mini Hooper #${idx + 1}`,
+            title: title || `Approved Mini Hooper #${i + 1}`,
             caption
           };
-        })
-        .filter(x => x.src && /^https?:\/\//i.test(x.src));
+        }).filter(x => x.src && /^https?:\/\//i.test(x.src));
 
         return items;
       }
 
-      // Run it
       loadApprovedEntries()
         .then(items => {
           if (items && items.length) {
             initCarousel(items);
           } else {
-            // Optional: show "empty" state
             if (headingEl) headingEl.textContent = "No approved entries yet";
             if (captionEl) captionEl.textContent = "";
             if (countEl) countEl.textContent = "0 / 0";
@@ -1132,7 +1183,6 @@
         })
         .catch(err => {
           console.warn("Sheet load failed:", err);
-          // Optional: keep UI empty on error
         });
 
     })();
