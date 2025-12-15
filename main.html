@@ -634,8 +634,8 @@
       </div>
 
       <div class="an-hero-actions">
-        <!-- ✅ UPDATED: target="_top" so links work inside Action Network embeds -->
-        <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
+        <!-- ✅ UPDATED: target="_blank" to always open new tab -->
+        <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener noreferrer">
           <span class="an-btn-icon">🏀</span>
           <span>Enter the Contest</span>
         </a>
@@ -643,8 +643,8 @@
         <a
           href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html"
           class="an-btn an-btn-ghost"
-          target="_top"
-          rel="noopener"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Terms &amp; Conditions
         </a>
@@ -675,7 +675,7 @@
               <h2>How to Enter</h2>
               <p>
                 To enter, complete the official
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" target="_top" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" target="_blank" rel="noopener noreferrer">
                   Mini Hoopers: America’s Cutest Pet Ballers Entry Form
                 </a>.
               </p>
@@ -685,7 +685,7 @@
                 <li>Provide your name, email address, and any requested social media handles.</li>
                 <li>
                   Confirm you are a <strong>legal U.S. resident aged 18+</strong> and agree to the
-                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_top" rel="noopener">
+                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_blank" rel="noopener noreferrer">
                     Terms &amp; Conditions
                   </a>.
                 </li>
@@ -737,7 +737,7 @@
                 </li>
                 <li>
                   Entries that are offensive, inappropriate, or otherwise violate the
-                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_top" rel="noopener">
+                  <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" target="_blank" rel="noopener noreferrer">
                     Terms &amp; Conditions
                   </a>
                   may be disqualified.
@@ -784,15 +784,15 @@
               <p>
                 Personal information collected in connection with the Contest will be used solely for administering the Contest and in
                 accordance with the Organizer’s
-                <a href="https://www.actionnetwork.com/privacy" target="_top" rel="noopener">Privacy Policy</a>.
+                <a href="https://www.actionnetwork.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
               </p>
 
               <div class="an-cta-row">
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener noreferrer">
                   Enter the Contest
                 </a>
 
-                <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" class="an-btn an-btn-ghost" target="_top" rel="noopener">
+                <a href="https://gauthambc.github.io/Mini_hoopers_pet_Contest/toc.html" class="an-btn an-btn-ghost" target="_blank" rel="noopener noreferrer">
                   View Full Terms &amp; Conditions
                 </a>
               </div>
@@ -840,7 +840,7 @@
               </div>
 
               <div class="an-cta-row" style="margin-top:1.6rem;">
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_top" rel="noopener">
+                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener noreferrer">
                   Enter the Contest
                 </a>
                 <button type="button" class="an-btn an-btn-ghost" data-switch-tab="guidelines">
@@ -1142,7 +1142,33 @@
       })
       .catch(err => console.warn("Sheet load failed:", err));
 
-    /* ===== Force outbound links to work inside embeds (capture phase) ===== */
+    /* ===== Force outbound links to open in a new tab (capture phase) ===== */
+    function openInNewTab(url) {
+      // 1) Try window.open first
+      try {
+        const w = window.open(url, '_blank', 'noopener,noreferrer');
+        if (w) {
+          try { w.opener = null; } catch (_) {}
+          return true;
+        }
+      } catch (_) {}
+
+      // 2) Fallback: synthetic anchor click (sometimes succeeds when window.open is blocked)
+      try {
+        const tmp = document.createElement('a');
+        tmp.href = url;
+        tmp.target = '_blank';
+        tmp.rel = 'noopener noreferrer';
+        tmp.style.display = 'none';
+        document.body.appendChild(tmp);
+        tmp.click();
+        tmp.remove();
+        return true;
+      } catch (_) {}
+
+      return false;
+    }
+
     const root = document.getElementById('an-mini-hoopers');
     if (root) {
       root.addEventListener('click', function (e) {
@@ -1155,20 +1181,22 @@
         // allow mailto/tel normally
         if (/^(mailto:|tel:)/i.test(href)) return;
 
-        // Stop any parent handlers from cancelling navigation
+        // don't hijack in-page anchors
+        if (href.startsWith('#')) return;
+
+        // If it's already explicitly set to open new tab, still enforce via JS (helps in some embeds)
         e.preventDefault();
         e.stopPropagation();
 
-        // Try to open a new tab first
-        const opened = window.open(href, '_blank', 'noopener,noreferrer');
+        const ok = openInNewTab(href);
 
-        // If popups are blocked, fall back to same-tab navigation
-        if (!opened) {
-          window.location.href = href;
+        // Last resort: escape iframe in same tab if popups are blocked
+        if (!ok) {
+          (window.top || window).location.href = href;
         }
       }, true);
     }
 
   })();
-</script>
+  </script>
 </section>
