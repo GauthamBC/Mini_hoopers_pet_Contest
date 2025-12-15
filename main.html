@@ -634,7 +634,6 @@
       </div>
 
       <div class="an-hero-actions">
-        <!-- ✅ UPDATED: target="_blank" to always open new tab -->
         <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener noreferrer">
           <span class="an-btn-icon">🏀</span>
           <span>Enter the Contest</span>
@@ -865,6 +864,45 @@
 
   <script>
   (function () {
+
+    /* ===== iframe auto-resize (child -> parent) ===== */
+    function reportHeight() {
+      try {
+        const doc = document.documentElement;
+        const body = document.body;
+
+        const h = Math.max(
+          body.scrollHeight, body.offsetHeight,
+          doc.clientHeight, doc.scrollHeight, doc.offsetHeight
+        );
+
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "minihoopers:resize", height: h }, "*");
+        }
+      } catch (e) {}
+    }
+
+    let _resizeT1 = null;
+    let _resizeT2 = null;
+    function scheduleResize() {
+      reportHeight();
+      if (_resizeT1) clearTimeout(_resizeT1);
+      if (_resizeT2) clearTimeout(_resizeT2);
+      _resizeT1 = setTimeout(reportHeight, 180);
+      _resizeT2 = setTimeout(reportHeight, 650);
+    }
+
+    window.addEventListener("load", () => scheduleResize());
+
+    // Keep height accurate as content changes (tabs, images, sheet load, etc.)
+    (function attachResizeObserver() {
+      const root = document.getElementById("an-mini-hoopers") || document.body;
+      if (root && "ResizeObserver" in window) {
+        const ro = new ResizeObserver(() => scheduleResize());
+        ro.observe(root);
+      }
+    })();
+
     /* ===== HERO SLIDER ===== */
     const heroSlider = document.querySelector('#an-mini-hoopers [data-an-slider="hero"]');
     if (heroSlider) {
@@ -883,6 +921,7 @@
           btn.addEventListener('click', () => {
             goTo(i);
             restart();
+            scheduleResize();
           });
           dotsWrap.appendChild(btn);
           return btn;
@@ -923,6 +962,9 @@
       tabSubmitted.setAttribute('aria-selected', isGuidelines ? 'false' : 'true');
       panelGuidelines.classList.toggle('is-active', isGuidelines);
       panelSubmitted.classList.toggle('is-active', !isGuidelines);
+
+      // ✅ update iframe height after tab swap
+      scheduleResize();
     }
 
     if (tabGuidelines && tabSubmitted && panelGuidelines && panelSubmitted) {
@@ -934,6 +976,7 @@
           const target = btn.getAttribute('data-switch-tab');
           setTab(target === 'guidelines' ? 'guidelines' : 'submitted');
           window.scrollTo({ top: 0, behavior: 'smooth' });
+          scheduleResize();
         });
       });
     }
@@ -975,12 +1018,17 @@
           btn.className = "an-thumb" + (i === active ? " is-active" : "");
           btn.setAttribute("aria-label", "View photo " + (i + 1));
           btn.innerHTML = `<img src="${items[i].src}" alt="Thumbnail ${i + 1}" loading="lazy">`;
-          btn.addEventListener('click', () => setActive(i));
+          btn.addEventListener('click', () => {
+            setActive(i);
+            scheduleResize();
+          });
           thumbStrip.appendChild(btn);
         }
 
         if (thumbPrev) thumbPrev.disabled = (page === 0);
         if (thumbNext) thumbNext.disabled = (page >= totalPages - 1);
+
+        scheduleResize();
       }
 
       function syncActiveThumb() {
@@ -1016,23 +1064,34 @@
 
         if (prevMain) prevMain.disabled = (items.length <= 1);
         if (nextMain) nextMain.disabled = (items.length <= 1);
+
+        scheduleResize();
       }
 
-      if (prevMain) prevMain.addEventListener('click', () => setActive((active - 1 + items.length) % items.length));
-      if (nextMain) nextMain.addEventListener('click', () => setActive((active + 1) % items.length));
+      if (prevMain) prevMain.addEventListener('click', () => {
+        setActive((active - 1 + items.length) % items.length);
+        scheduleResize();
+      });
+      if (nextMain) nextMain.addEventListener('click', () => {
+        setActive((active + 1) % items.length);
+        scheduleResize();
+      });
 
       if (thumbPrev) thumbPrev.addEventListener('click', () => {
         page = clamp(page - 1, 0, totalPages - 1);
         renderThumbPage();
+        scheduleResize();
       });
 
       if (thumbNext) thumbNext.addEventListener('click', () => {
         page = clamp(page + 1, 0, totalPages - 1);
         renderThumbPage();
+        scheduleResize();
       });
 
       renderThumbPage();
       setActive(0);
+      scheduleResize();
     }
 
     /* ===== Approved Photos: load from published Google Sheet ===== */
@@ -1138,9 +1197,14 @@
           if (nextMain) nextMain.disabled = true;
           if (thumbPrev) thumbPrev.disabled = true;
           if (thumbNext) thumbNext.disabled = true;
+          scheduleResize();
         }
+        scheduleResize();
       })
-      .catch(err => console.warn("Sheet load failed:", err));
+      .catch(err => {
+        console.warn("Sheet load failed:", err);
+        scheduleResize();
+      });
 
     /* ===== Force outbound links to open in a new tab (capture phase) ===== */
     function openInNewTab(url) {
@@ -1153,7 +1217,7 @@
         }
       } catch (_) {}
 
-      // 2) Fallback: synthetic anchor click (sometimes succeeds when window.open is blocked)
+      // 2) Fallback: synthetic anchor click
       try {
         const tmp = document.createElement('a');
         tmp.href = url;
@@ -1184,7 +1248,6 @@
         // don't hijack in-page anchors
         if (href.startsWith('#')) return;
 
-        // If it's already explicitly set to open new tab, still enforce via JS (helps in some embeds)
         e.preventDefault();
         e.stopPropagation();
 
@@ -1196,6 +1259,9 @@
         }
       }, true);
     }
+
+    // initial size push
+    scheduleResize();
 
   })();
   </script>
