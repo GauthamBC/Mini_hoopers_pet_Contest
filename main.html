@@ -551,6 +551,33 @@
       display: block;
     }
 
+    /* ✅ Friendly empty-state card (NEW) */
+    #an-mini-hoopers .an-empty-state {
+      margin-top: 1.25rem;
+      padding: 18px 16px;
+      border-radius: 16px;
+      background: #eef3ff;
+      border: 1px dashed rgba(0, 155, 94, 0.35);
+      text-align: center;
+      color: #111827;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    }
+    #an-mini-hoopers .an-empty-emoji {
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    #an-mini-hoopers .an-empty-state h3 {
+      margin: 0 0 6px;
+      text-align: center !important;
+    }
+    #an-mini-hoopers .an-empty-state p {
+      margin: 6px 0;
+      color: #111827;
+      font-weight: 600;
+      text-align: center !important;
+    }
+
     @media (max-width: 900px) {
       .an-thumb-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
@@ -578,6 +605,32 @@
     }
     #an-mini-hoopers .an-tabs{
       width: 100%;
+    }
+    /* ✅ Mini Hoopers footer links (NEW) */
+    #an-mini-hoopers .an-footer {
+      background: #f3f4f6;
+      border-top: 1px solid rgba(229, 231, 235, 0.9);
+      padding: 16px 0 18px;
+      color: #6b7280;
+    }
+    
+    #an-mini-hoopers .an-footer-inner {
+      max-width: var(--an-max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+    
+    #an-mini-hoopers .an-footer a {
+      color: #2563eb;
+      border-bottom: 1px dotted rgba(37, 99, 235, 0.5);
+    }
+    
+    #an-mini-hoopers .an-footer a:hover {
+      color: #1d4ed8;
+      border-bottom-color: rgba(37, 99, 235, 0.9);
     }
   </style>
 
@@ -664,6 +717,7 @@
         <div class="an-tab-panel is-active" role="tabpanel" id="an-panel-guidelines" aria-labelledby="an-tab-guidelines">
           <div class="an-main" id="an-mini-hoopers-details">
             <div class="an-main-inner">
+              <!-- (unchanged guidelines content) -->
               <h2>How to Enter</h2>
               <p>
                 To enter, complete the official
@@ -808,9 +862,18 @@
                 This gallery shows <strong>approved</strong> Mini Hoopers entries. Check back as new submissions get reviewed!
               </p>
 
-              <h2 id="an-submitted-heading">Approved Mini Hooper #1</h2>
+              <h2 id="an-submitted-heading">Loading approved entries…</h2>
 
-              <div class="an-carousel" id="an-carousel">
+              <!-- ✅ Friendly empty state (NEW) -->
+              <div id="an-empty-state" class="an-empty-state" hidden>
+                <div class="an-empty-emoji" aria-hidden="true">🐶🏀</div>
+                <h3>No Mini Hoopers on the court yet!</h3>
+                <p>Looks like the dogs (and cats) are still stretching.</p>
+                <p><strong>Submit your pet’s photo and be the first baller in the gallery 🏀🐾</strong></p>
+              </div>
+
+              <!-- ✅ Hide carousel until we confirm we have items (prevents black frame flash) -->
+              <div class="an-carousel" id="an-carousel" style="display:none;">
                 <div class="an-carousel-stage">
                   <button class="an-carousel-arrow prev" type="button" aria-label="Previous photo">‹</button>
                   <img class="an-carousel-main" id="an-carousel-main" src="" alt="Approved Mini Hoopers entry">
@@ -849,7 +912,19 @@
 
       </div>
     </div>
-
+  <!-- ✅ Footer promo links (NEW) -->
+  <div class="an-footer" role="contentinfo">
+    <div class="an-footer-inner">
+      Explore more from The Action Network:
+      <a href="https://www.actionnetwork.com/online-sports-betting/reviews/draftkings/" target="_blank" rel="noopener noreferrer">
+        DraftKings Promo Code
+      </a>
+      and
+      <a href="https://www.actionnetwork.com/online-sports-betting/reviews/fanduel" target="_blank" rel="noopener noreferrer">
+        FanDuel Promo Code
+      </a>.
+    </div>
+  </div>
   <script>
   (function () {
 
@@ -975,6 +1050,8 @@
     const countEl = document.getElementById('an-carousel-count');
     const headingEl = document.getElementById('an-submitted-heading');
 
+    const emptyStateEl = document.getElementById('an-empty-state');
+
     const prevMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.prev') : null;
     const nextMain = carouselWrap ? carouselWrap.querySelector('.an-carousel-arrow.next') : null;
 
@@ -985,6 +1062,20 @@
     const THUMBS_PER_PAGE = 8;
 
     function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+    function showEmptyState() {
+      if (emptyStateEl) emptyStateEl.hidden = false;
+      if (carouselWrap) carouselWrap.style.display = "none";
+      if (headingEl) headingEl.style.display = "none";
+      scheduleResize();
+    }
+
+    function showCarousel() {
+      if (emptyStateEl) emptyStateEl.hidden = true;
+      if (carouselWrap) carouselWrap.style.display = "";
+      if (headingEl) headingEl.style.display = "";
+      scheduleResize();
+    }
 
     function initCarousel(items) {
       if (!items || !items.length) return;
@@ -1171,32 +1262,30 @@
       return items;
     }
 
+    // Start hidden (no black frame), then show the right UI based on results
+    showEmptyState(); // temporary while loading (prevents frame flash)
+    if (headingEl) { headingEl.style.display = ""; headingEl.textContent = "Loading approved entries…"; }
+
     loadApprovedEntries()
       .then(items => {
         if (items && items.length) {
+          showCarousel();
           initCarousel(items);
         } else {
-          if (headingEl) headingEl.textContent = "No approved entries yet";
-          if (captionEl) captionEl.textContent = "";
-          if (countEl) countEl.textContent = "0 / 0";
-          if (mainImg) mainImg.removeAttribute("src");
-          if (thumbStrip) thumbStrip.innerHTML = "";
-          if (prevMain) prevMain.disabled = true;
-          if (nextMain) nextMain.disabled = true;
-          if (thumbPrev) thumbPrev.disabled = true;
-          if (thumbNext) thumbNext.disabled = true;
-          scheduleResize();
+          // No approved entries: show friendly empty state and hide carousel entirely
+          showEmptyState();
         }
         scheduleResize();
       })
       .catch(err => {
         console.warn("Sheet load failed:", err);
+        // If the sheet fails, we still show the friendly state instead of a broken box
+        showEmptyState();
         scheduleResize();
       });
 
     /* ===== Force outbound links to open in a new tab (capture phase) ===== */
     function openInNewTab(url) {
-      // 1) Try window.open first
       try {
         const w = window.open(url, '_blank', 'noopener,noreferrer');
         if (w) {
@@ -1205,7 +1294,6 @@
         }
       } catch (_) {}
 
-      // 2) Fallback: synthetic anchor click
       try {
         const tmp = document.createElement('a');
         tmp.href = url;
@@ -1230,18 +1318,13 @@
         const href = a.getAttribute('href');
         if (!href) return;
 
-        // allow mailto/tel normally
         if (/^(mailto:|tel:)/i.test(href)) return;
-
-        // don't hijack in-page anchors
         if (href.startsWith('#')) return;
 
         e.preventDefault();
         e.stopPropagation();
 
         const ok = openInNewTab(href);
-
-        // Last resort: escape iframe in same tab if popups are blocked
         if (!ok) {
           (window.top || window).location.href = href;
         }
