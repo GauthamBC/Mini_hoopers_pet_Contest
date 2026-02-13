@@ -772,6 +772,68 @@
       }
     }
 
+  
+    /* ===== Contest Closed modal (NEW) ===== */
+    #an-mini-hoopers .an-modal-backdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 9999;
+    }
+    #an-mini-hoopers .an-modal-backdrop.is-open{ display:flex; }
+
+    #an-mini-hoopers .an-modal{
+      width: min(560px, 100%);
+      background: #ffffff;
+      color: #111827;
+      border-radius: 18px;
+      border: 1px solid rgba(229, 231, 235, 0.95);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+      overflow: hidden;
+    }
+    #an-mini-hoopers .an-modal-head{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1rem 1.1rem;
+      background: #e7fff1;
+      border-bottom: 1px solid rgba(229, 231, 235, 0.95);
+    }
+    #an-mini-hoopers .an-modal-title{
+      margin:0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #007548;
+    }
+    #an-mini-hoopers .an-modal-close{
+      appearance:none;
+      border:none;
+      background:#ffffff;
+      color:#007548;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    }
+    #an-mini-hoopers .an-modal-body{
+      padding: 1.05rem 1.1rem 1.2rem;
+    }
+    #an-mini-hoopers .an-modal-body p{
+      margin: 0.25rem 0;
+      color: #374151;
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
   </style>
 
   <div class="an-hero">
@@ -1096,9 +1158,22 @@
             </div>
           </div>
 
-        </div
-
         </div>
+
+
+  <!-- Contest Closed Modal (NEW) -->
+  <div class="an-modal-backdrop" id="an-contest-closed" aria-hidden="true">
+    <div class="an-modal" role="dialog" aria-modal="true" aria-labelledby="an-contest-closed-title">
+      <div class="an-modal-head">
+        <h3 class="an-modal-title" id="an-contest-closed-title">Contest Closed</h3>
+        <button class="an-modal-close" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="an-modal-body">
+        <p><strong>This contest is officially over.</strong></p>
+        <p>Thanks to everyone who entered Mini Hoopers. Submissions are no longer being accepted.</p>
+      </div>
+    </div>
+  </div>
 
 <!-- ✅ Footer promo links (NEW) -->
   <div class="an-footer" role="contentinfo">
@@ -1487,7 +1562,33 @@
       });
 
     /* ===== Force outbound links to open in a new tab (capture phase) ===== */
-    function openInNewTab(url) {
+    
+    /* ===== Contest Closed handler (NEW) ===== */
+    const contestClosedModal = document.getElementById('an-contest-closed');
+    function showContestClosed() {
+      if (!contestClosedModal) return;
+      contestClosedModal.classList.add('is-open');
+      contestClosedModal.setAttribute('aria-hidden', 'false');
+      scheduleResize();
+    }
+    function hideContestClosed() {
+      if (!contestClosedModal) return;
+      contestClosedModal.classList.remove('is-open');
+      contestClosedModal.setAttribute('aria-hidden', 'true');
+      scheduleResize();
+    }
+    if (contestClosedModal) {
+      contestClosedModal.addEventListener('click', (e) => {
+        if (e.target === contestClosedModal) hideContestClosed();
+      });
+      const btn = contestClosedModal.querySelector('.an-modal-close');
+      btn && btn.addEventListener('click', hideContestClosed);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contestClosedModal.classList.contains('is-open')) hideContestClosed();
+      });
+    }
+
+function openInNewTab(url) {
       try {
         const w = window.open(url, '_blank', 'noopener,noreferrer');
         if (w) {
@@ -1519,6 +1620,13 @@
 
         const href = a.getAttribute('href');
         if (!href) return;
+
+        if (href === 'https://forms.gle/5E8CmZP7KasYeYC9A') {
+          e.preventDefault();
+          e.stopPropagation();
+          showContestClosed();
+          return;
+        }
 
         if (/^(mailto:|tel:)/i.test(href)) return;
         if (href.startsWith('#')) return;
