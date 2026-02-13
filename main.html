@@ -632,6 +632,146 @@
       color: #1d4ed8;
       border-bottom-color: rgba(37, 99, 235, 0.9);
     }
+  
+    /* ===== Winner Panel polish (NEW) ===== */
+    #an-mini-hoopers .an-winner-card{
+      margin-top: 0.5rem;
+      padding: 1.35rem 1.35rem 1.5rem;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+      border: 1px solid rgba(229, 231, 235, 0.95);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.10);
+    }
+    #an-mini-hoopers .an-winner-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 1rem;
+      flex-wrap:wrap;
+      margin-bottom: 0.35rem;
+    }
+    #an-mini-hoopers .an-winner-title{
+      margin:0;
+    }
+    #an-mini-hoopers .an-winner-badge{
+      display:inline-flex;
+      align-items:center;
+      padding: 0.38rem 0.9rem;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: #e7fff1;
+      color: #007548;
+      box-shadow: inset 0 -2px 0 #009B5E;
+      white-space: nowrap;
+    }
+    #an-mini-hoopers .an-winner-sub{
+      margin: 0.35rem 0 0;
+      font-size: 0.98rem;
+      color: #4b5563;
+      display:flex;
+      align-items:center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    #an-mini-hoopers .an-winner-caption{
+      margin: 1.05rem 0 0.8rem;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      background: #eef3ff;
+      border: 1px solid rgba(37, 99, 235, 0.12);
+      color: #111827;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+    #an-mini-hoopers .an-winner-caption small{
+      display:block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #2563eb;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+    #an-mini-hoopers .an-winner-note-italic{
+      margin: 0.65rem 0 0;
+      font-style: italic;
+      color: #6b7280;
+      font-size: 0.92rem;
+    }
+
+  
+    /* ===== Subtle celebration sparkle (NEW) ===== */
+    #an-mini-hoopers .an-winner-card{
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* A soft sparkle burst behind the badge */
+    #an-mini-hoopers .an-winner-badge{
+      position: relative;
+      isolation: isolate;
+    }
+    #an-mini-hoopers .an-winner-badge::before{
+      content:"";
+      position:absolute;
+      inset:-22px -26px;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 15% 35%, rgba(0,196,106,0.55) 0 3px, transparent 4px),
+        radial-gradient(circle at 35% 15%, rgba(37,99,235,0.45) 0 3px, transparent 4px),
+        radial-gradient(circle at 55% 45%, rgba(251,191,36,0.55) 0 3px, transparent 4px),
+        radial-gradient(circle at 75% 25%, rgba(0,196,106,0.45) 0 3px, transparent 4px),
+        radial-gradient(circle at 85% 55%, rgba(37,99,235,0.35) 0 3px, transparent 4px);
+      filter: blur(0.2px);
+      opacity: 0.0;
+      transform: scale(0.95);
+      z-index: -1;
+      pointer-events:none;
+      animation: anSparkle 2.8s ease-in-out infinite;
+    }
+
+    /* Light confetti lines drifting down (very subtle) */
+    #an-mini-hoopers .an-winner-card::after{
+      content:"";
+      position:absolute;
+      top:-40px;
+      left:0;
+      right:0;
+      height:140px;
+      background:
+        linear-gradient(100deg, rgba(0,196,106,0.0) 0 45%, rgba(0,196,106,0.25) 46% 47%, rgba(0,196,106,0.0) 48% 100%),
+        linear-gradient(80deg, rgba(37,99,235,0.0) 0 55%, rgba(37,99,235,0.18) 56% 57%, rgba(37,99,235,0.0) 58% 100%),
+        linear-gradient(115deg, rgba(251,191,36,0.0) 0 62%, rgba(251,191,36,0.22) 63% 64%, rgba(251,191,36,0.0) 65% 100%);
+      background-size: 320px 140px, 420px 140px, 520px 140px;
+      background-position: 0 0, 120px 0, 240px 0;
+      opacity: 0.25;
+      pointer-events:none;
+      animation: anConfetti 6s linear infinite;
+    }
+
+    @keyframes anSparkle{
+      0%, 45% { opacity: 0; transform: scale(0.95); }
+      55% { opacity: 0.75; transform: scale(1.02); }
+      70% { opacity: 0.25; transform: scale(1.00); }
+      100% { opacity: 0; transform: scale(0.98); }
+    }
+
+    @keyframes anConfetti{
+      0%   { transform: translateY(0);    opacity: 0.18; }
+      60%  { opacity: 0.25; }
+      100% { transform: translateY(120px); opacity: 0.0; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #an-mini-hoopers .an-winner-badge::before,
+      #an-mini-hoopers .an-winner-card::after{
+        animation: none !important;
+        opacity: 0.15;
+      }
+    }
+
   </style>
 
   <div class="an-hero">
@@ -711,6 +851,9 @@
           </button>
           <button class="an-tab-btn" type="button" role="tab" id="an-tab-submitted" aria-selected="false" aria-controls="an-panel-submitted">
             Submitted Photos
+          </button>
+          <button class="an-tab-btn" type="button" role="tab" id="an-tab-winner" aria-selected="false" aria-controls="an-panel-winner">
+            Winner
           </button>
         </div>
 
@@ -892,17 +1035,7 @@
                   <button class="an-thumb-pager" id="an-thumb-next" type="button" aria-label="Next thumbnails">‹</button>
                 </div>
               </div>
-
-              <div class="an-cta-row" style="margin-top:1.6rem;">
-                <a href="https://forms.gle/5E8CmZP7KasYeYC9A" class="an-btn an-btn-primary" target="_blank" rel="noopener noreferrer">
-                  Enter the Contest
-                </a>
-                <button type="button" class="an-btn an-btn-ghost" data-switch-tab="guidelines">
-                  Read Guidelines
-                </button>
-              </div>
-
-              <p class="an-note">
+<p class="an-note">
                 Only approved entries appear here. If your photo isn’t visible yet, it may still be in review.
               </p>
             </div>
@@ -912,7 +1045,62 @@
       </div>
     </div>
 
-  <!-- ✅ Footer promo links (NEW) -->
+        <!-- Panel: Winner -->
+        <div class="an-tab-panel" role="tabpanel" id="an-panel-winner" aria-labelledby="an-tab-winner">
+          <div class="an-main">
+            <div class="an-main-inner">
+
+              <div class="an-winner-card">
+                <div class="an-winner-header">
+                  <h2 id="an-winner-heading" class="an-winner-title">Mini-Hooper 2 — Keiko Tanaka</h2>
+                  <span class="an-winner-badge" aria-label="Winner">Winner</span>
+                </div>
+
+                <div class="an-winner-sub">
+                  <span>Our Mini Hoopers champion has been crowned</span> <span aria-hidden="true">🏆</span>
+                </div>
+
+                <div class="an-winner-caption" role="note" aria-label="Caption">
+                  <small>Caption</small>
+                  A sweet pose as I rest in between my dribbles
+                </div>
+
+                <div class="an-carousel-stage" style="max-width: 980px; margin-left: auto; margin-right: auto;">
+                  <div style="position:relative; width:100%; aspect-ratio:16/9; background:#0b1220;">
+                    <img
+                      id="an-winner-img"
+                      src="https://i.postimg.cc/pL5yzPSN/IMG-0563-CL-Tanaka-redacted-dot-app-(2).jpg"
+                      alt="Mini Hoopers winner: Keiko Tanaka"
+                      loading="eager"
+                      style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; background:#0b1220;"
+                    >
+                  </div>
+                </div>
+
+                <p class="an-winner-note-italic">
+                  Note: Some photo details may be blurred or cropped for compliance, privacy, or brand-safety reasons.
+                </p>
+
+                <p class="an-note" style="margin-top: 1.2rem;">
+                  Mini-Hooper 2 — <strong>Keiko Tanaka</strong> — was voted our winner by an internal panel of Action Network / Better Collective judges.
+                </p>
+
+                <p class="an-note">
+                  It wasn’t an easy call — the competition was genuinely strong, and several entries were right in the mix. Huge thanks to everyone who entered and helped make Mini Hoopers such a fun showcase of pet “baller” energy.
+                </p>
+
+                <p class="an-note" style="margin-bottom: 0;">
+                  We’ll be running more pet contests and features in the future, so if you didn’t take the crown this time, don’t worry — you’ll have more chances to be featured 🐾
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div
+
+        </div>
+
+<!-- ✅ Footer promo links (NEW) -->
   <div class="an-footer" role="contentinfo">
     <div class="an-footer-inner">
       Explore more from The Action Network:
@@ -1017,28 +1205,41 @@
     /* ===== TABS ===== */
     const tabGuidelines = document.getElementById('an-tab-guidelines');
     const tabSubmitted = document.getElementById('an-tab-submitted');
+    const tabWinner = document.getElementById('an-tab-winner');
+
     const panelGuidelines = document.getElementById('an-panel-guidelines');
     const panelSubmitted = document.getElementById('an-panel-submitted');
+    const panelWinner = document.getElementById('an-panel-winner');
 
     function setTab(which) {
       const isGuidelines = which === 'guidelines';
-      tabGuidelines.setAttribute('aria-selected', isGuidelines ? 'true' : 'false');
-      tabSubmitted.setAttribute('aria-selected', isGuidelines ? 'false' : 'true');
-      panelGuidelines.classList.toggle('is-active', isGuidelines);
-      panelSubmitted.classList.toggle('is-active', !isGuidelines);
+      const isSubmitted  = which === 'submitted';
+      const isWinner     = which === 'winner';
+
+      if (tabGuidelines) tabGuidelines.setAttribute('aria-selected', isGuidelines ? 'true' : 'false');
+      if (tabSubmitted)  tabSubmitted.setAttribute('aria-selected', isSubmitted ? 'true' : 'false');
+      if (tabWinner)     tabWinner.setAttribute('aria-selected', isWinner ? 'true' : 'false');
+
+      if (panelGuidelines) panelGuidelines.classList.toggle('is-active', isGuidelines);
+      if (panelSubmitted)  panelSubmitted.classList.toggle('is-active', isSubmitted);
+      if (panelWinner)     panelWinner.classList.toggle('is-active', isWinner);
 
       // ✅ update iframe height after tab swap
       scheduleResize();
     }
 
-    if (tabGuidelines && tabSubmitted && panelGuidelines && panelSubmitted) {
+    if (tabGuidelines && tabSubmitted && tabWinner && panelGuidelines && panelSubmitted && panelWinner) {
       tabGuidelines.addEventListener('click', () => setTab('guidelines'));
       tabSubmitted.addEventListener('click', () => setTab('submitted'));
+      tabWinner.addEventListener('click', () => setTab('winner'));
 
       document.querySelectorAll('#an-mini-hoopers [data-switch-tab]').forEach((btn) => {
         btn.addEventListener('click', () => {
-          const target = btn.getAttribute('data-switch-tab');
-          setTab(target === 'guidelines' ? 'guidelines' : 'submitted');
+          const target = (btn.getAttribute('data-switch-tab') || '').trim();
+          if (target === 'guidelines') setTab('guidelines');
+          else if (target === 'winner') setTab('winner');
+          else setTab('submitted');
+
           window.scrollTo({ top: 0, behavior: 'smooth' });
           scheduleResize();
         });
